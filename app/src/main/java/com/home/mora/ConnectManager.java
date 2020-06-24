@@ -95,63 +95,67 @@ public class ConnectManager extends AppCompatActivity {
      * @param jsonObject
      */
     private void receiveMessage(JSONObject jsonObject) {
-
         isReceiving = true;
         try {
+            String sender = jsonObject.getString("USER");
             switch (jsonObject.getString("kind")) {
                 case "mora":
-                    int opponent = jsonObject.getInt("choose");
-                    System.out.println(opponent);
-                    txtCom = findViewById(R.id.txt_com);
-                    txtWinLose = findViewById(R.id.txt_winLose);
-                    if (activity.playerMora == 0) {
-                        switch (opponent) {
-                            case 0:
-                                txtCom.setText("電腦出拳頭");
-                                txtWinLose.setText("平手");
-                                break;
-                            case 1:
-                                txtCom.setText("電腦出剪刀");
-                                txtWinLose.setText("你贏了");
-                                break;
-                            case 2:
-                                txtCom.setText("電腦出布");
-                                txtWinLose.setText("你輸了");
-                                break;
+                    System.out.println("sender : " + sender);
+                    System.out.println("user : " + activity.userName);
+                    System.out.println(sender != activity.userName);
+                    if (sender != activity.userName) { // 當發送者跟接收者名稱不同時才觸發
+                        int opponent = jsonObject.getInt("choose");
+                        System.out.println(opponent);
+                        txtCom = findViewById(R.id.txt_com);
+                        txtWinLose = findViewById(R.id.txt_winLose);
+                        if (activity.playerMora == 0) {
+                            switch (opponent) {
+                                case 0:
+                                    txtCom.setText("對手出拳頭");
+                                    txtWinLose.setText("平手");
+                                    break;
+                                case 1:
+                                    txtCom.setText("對手出剪刀");
+                                    txtWinLose.setText("你贏了");
+                                    break;
+                                case 2:
+                                    txtCom.setText("對手出布");
+                                    txtWinLose.setText("你輸了");
+                                    break;
+                            }
+                        } else if (activity.playerMora == 1) {
+                            switch (opponent) {
+                                case 0:
+                                    txtCom.setText("對手出拳頭");
+                                    txtWinLose.setText("你輸了");
+                                    break;
+                                case 1:
+                                    txtCom.setText("對手出剪刀");
+                                    txtWinLose.setText("平手");
+                                    break;
+                                case 2:
+                                    txtCom.setText("對手出布");
+                                    txtWinLose.setText("你贏了");
+                                    break;
+                            }
+                        } else if (activity.playerMora == 2) {
+                            switch (opponent) {
+                                case 0:
+                                    txtCom.setText("對手出拳頭");
+                                    txtWinLose.setText("你贏了");
+                                    break;
+                                case 1:
+                                    txtCom.setText("對手出剪刀");
+                                    txtWinLose.setText("你輸了");
+                                    break;
+                                case 2:
+                                    txtCom.setText("對手出布");
+                                    txtWinLose.setText("平手");
+                                    break;
+                            }
                         }
-                    } else if (activity.playerMora == 1) {
-                        switch (opponent) {
-                            case 0:
-                                txtCom.setText("電腦出拳頭");
-                                txtWinLose.setText("你輸了");
-                                break;
-                            case 1:
-                                txtCom.setText("電腦出剪刀");
-                                txtWinLose.setText("平手");
-                                break;
-                            case 2:
-                                txtCom.setText("電腦出布");
-                                txtWinLose.setText("你贏了");
-                                break;
-                        }
-                    } else if (activity.playerMora == 2) {
-                        switch (opponent) {
-                            case 0:
-                                txtCom.setText("電腦出拳頭");
-                                txtWinLose.setText("你贏了");
-                                break;
-                            case 1:
-                                txtCom.setText("電腦出剪刀");
-                                txtWinLose.setText("你輸了");
-                                break;
-                            case 2:
-                                txtCom.setText("電腦出布");
-                                txtWinLose.setText("平手");
-                                break;
-                        }
+                        isReceiving = false;
                     }
-
-                    isReceiving = false;
                     break;
 
             }
@@ -172,6 +176,7 @@ public class ConnectManager extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("kind", kind);
+                jsonObject.put("USER", activity.userName);
                 switch (kind) {
                     case "mora":
                         jsonObject.put("choose", num);

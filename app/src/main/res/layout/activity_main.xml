@@ -7,17 +7,10 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.35" />
-
     <Button
         android:id="@+id/button"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:background="@drawable/stone"
         android:onClick="stone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -26,8 +19,8 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:background="@drawable/scissors"
         android:onClick="scissors"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -36,8 +29,8 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:background="@drawable/cloth"
         android:onClick="cloth"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -47,10 +40,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txt_self"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:text="123123"/>
+
+    <TextView
         android:id="@+id/txt_com"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +65,7 @@
         android:id="@+id/txt_winLose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -73,7 +77,6 @@
         android:id="@+id/roomEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:inputType="number"
         android:singleLine = "true"
         android:textScaleX="2"
