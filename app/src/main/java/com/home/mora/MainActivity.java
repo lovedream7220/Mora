@@ -16,7 +16,7 @@ import android.widget.Toast;
 import okhttp3.WebSocket;
 
 public class MainActivity extends AppCompatActivity {
-
+    /**0626讓冠宇看懂的連線版本*/
 
     private TextView txtCom, txtWinLose, txt_self;
     public int playerMora;
