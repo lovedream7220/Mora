@@ -102,55 +102,7 @@ public class ConnectManager extends AppCompatActivity {
                 case "mora":
                     if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
                         int opponent = jsonObject.getInt("choose");
-                        System.out.println(opponent);
-                        txtCom = findViewById(R.id.txt_com);
-                        txtWinLose = findViewById(R.id.txt_winLose);
-                        if (activity.playerMora == 0) {
-                            switch (opponent) {
-                                case 0:
-                                    txtCom.setText("對手出拳頭");
-                                    txtWinLose.setText("平手");
-                                    break;
-                                case 1:
-                                    txtCom.setText("對手出剪刀");
-                                    txtWinLose.setText("你贏了");
-                                    break;
-                                case 2:
-                                    txtCom.setText("對手出布");
-                                    txtWinLose.setText("你輸了");
-                                    break;
-                            }
-                        } else if (activity.playerMora == 1) {
-                            switch (opponent) {
-                                case 0:
-                                    txtCom.setText("對手出拳頭");
-                                    txtWinLose.setText("你輸了");
-                                    break;
-                                case 1:
-                                    txtCom.setText("對手出剪刀");
-                                    txtWinLose.setText("平手");
-                                    break;
-                                case 2:
-                                    txtCom.setText("對手出布");
-                                    txtWinLose.setText("你贏了");
-                                    break;
-                            }
-                        } else if (activity.playerMora == 2) {
-                            switch (opponent) {
-                                case 0:
-                                    txtCom.setText("對手出拳頭");
-                                    txtWinLose.setText("你贏了");
-                                    break;
-                                case 1:
-                                    txtCom.setText("對手出剪刀");
-                                    txtWinLose.setText("你輸了");
-                                    break;
-                                case 2:
-                                    txtCom.setText("對手出布");
-                                    txtWinLose.setText("平手");
-                                    break;
-                            }
-                        }
+                        activity.mainJudgment(opponent);
 //                        isReceiving = false;
                     }
                     break;
