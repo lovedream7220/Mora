@@ -25,7 +25,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://6c6bc0455966.ngrok.io";
+    private static final String SERVER_PATH = "http://db08f7f15594.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -95,15 +95,12 @@ public class ConnectManager extends AppCompatActivity {
      * @param jsonObject
      */
     private void receiveMessage(JSONObject jsonObject) {
-        isReceiving = true;
+//        isReceiving = true;
         try {
             String sender = jsonObject.getString("USER");
             switch (jsonObject.getString("kind")) {
                 case "mora":
-                    System.out.println("sender : " + sender);
-                    System.out.println("user : " + activity.userName);
-                    System.out.println(sender != activity.userName);
-                    if (sender != activity.userName) { // 當發送者跟接收者名稱不同時才觸發
+                    if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
                         int opponent = jsonObject.getInt("choose");
                         System.out.println(opponent);
                         txtCom = findViewById(R.id.txt_com);
@@ -154,7 +151,7 @@ public class ConnectManager extends AppCompatActivity {
                                     break;
                             }
                         }
-                        isReceiving = false;
+//                        isReceiving = false;
                     }
                     break;
 
@@ -172,7 +169,7 @@ public class ConnectManager extends AppCompatActivity {
      * @param kind
      */
     public void sendMessage(int num, boolean bool, String kind) {
-        if (!isReceiving) {
+//        if (!isReceiving) {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("kind", kind);
@@ -187,7 +184,7 @@ public class ConnectManager extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        }
+//        }
     }
 
     /**

@@ -16,8 +16,12 @@ import android.widget.Toast;
 import okhttp3.WebSocket;
 
 public class MainActivity extends AppCompatActivity {
-    /**0626讓冠宇看懂的連線版本*/
-
+    /**0626讓冠宇看懂的連線版本 */
+    /**
+     * 0627 :
+     * 1.增加按鈕可以重新連線 initConnect
+     * 2.
+     */
     private TextView txtCom, txtWinLose, txt_self;
     public int playerMora;
     private EditText roomEditText;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         int i = (int) Math.random() * 100;
         userName = Integer.toString(i);
     }
+
 
     public void edit(View view) {
         /** 使用者名稱 : 有人名稱就記錄下來*/
@@ -61,71 +66,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void stone(View view) {
-//        comMora = (int) (Math.floor(Math.random() * 3));
         connectManager.sendMessage(0, true, "mora");
         playerMora = 0;
         txt_self.setText("出拳頭");
         Toast.makeText(this, "出拳頭", Toast.LENGTH_SHORT).show();
-//        switch (comMora) {
-//            case 0:
-//                txtCom.setText("電腦出拳頭");
-//                txtWinLose.setText("平手");
-//                break;
-//            case 1:
-//                txtCom.setText("電腦出剪刀");
-//                txtWinLose.setText("你贏了");
-//                break;
-//            case 2:
-//                txtCom.setText("電腦出布");
-//                txtWinLose.setText("你輸了");
-//                break;
-//        }
 
     }
 
     public void scissors(View view) {
-//        comMora = (int) (Math.floor(Math.random() * 3));
         connectManager.sendMessage(1, true, "mora");
         playerMora = 1;
         txt_self.setText("出剪刀");
         Toast.makeText(this, "出剪刀", Toast.LENGTH_SHORT).show();
-//        switch (comMora) {
-//            case 0:
-//                txtCom.setText("電腦出拳頭");
-//                txtWinLose.setText("你輸了");
-//                break;
-//            case 1:
-//                txtCom.setText("電腦出剪刀");
-//                txtWinLose.setText("平手");
-//                break;
-//            case 2:
-//                txtCom.setText("電腦出布");
-//                txtWinLose.setText("你贏了");
-//                break;
-//        }
     }
 
     public void cloth(View view) {
-//        comMora = (int) (Math.floor(Math.random() * 3));
         connectManager.sendMessage(2, true, "mora");
         txt_self.setText("出布");
         Toast.makeText(this, "出布", Toast.LENGTH_SHORT).show();
         playerMora = 2;
-//        switch (comMora) {
-//            case 0:
-//                txtCom.setText("電腦出拳頭");
-//                txtWinLose.setText("你贏了");
-//                break;
-//            case 1:
-//                txtCom.setText("電腦出剪刀");
-//                txtWinLose.setText("你輸了");
-//                break;
-//            case 2:
-//                txtCom.setText("電腦出布");
-//                txtWinLose.setText("平手");
-//                break;
-//        }
     }
 
+    public void initConnect(View view) {
+//        connectManager.sendMessage(2, true, "mora");
+//        txt_self.setText("出布");
+        connectManager.initiateSocketConnection();
+        Toast.makeText(this, "重新連線", Toast.LENGTH_SHORT).show();
+//        playerMora = 2;
+    }
 
 }
