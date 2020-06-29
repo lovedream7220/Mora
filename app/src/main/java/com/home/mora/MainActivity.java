@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
      * 1.增加按鈕可以重新連線 initConnect
      * 2.
      */
-    private TextView txtCom, txtWinLose, txt_self;
-
+    private TextView txtCom, txtWinLose, txt_self,txtVs;
+    private Button btnInitStart,btnInitConnect;
+    private ImageView imageSelf,imageCom;
     private EditText roomEditText;
     //    public String userName;
     WebSocket webSocket;
@@ -55,12 +58,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        connectManager.initiateSocketConnection();
+        findView();
+        imageSelf.setVisibility(View.INVISIBLE);
+        imageCom.setVisibility(View.INVISIBLE);
+        txtVs.setVisibility(View.INVISIBLE);
+        roomEditText.setText(userName);
+    }
+
+    private void findView() {
         txtCom = findViewById(R.id.txt_com);
         txtWinLose = findViewById(R.id.txt_winLose);
-        connectManager.initiateSocketConnection();
         txt_self = findViewById(R.id.txt_self);
         roomEditText = findViewById(R.id.roomEditText);
-        roomEditText.setHint(userName);
+        btnInitStart = findViewById(R.id.initStart);
+        btnInitConnect = findViewById(R.id.initConnect);
+        imageSelf = findViewById(R.id.image_self);
+        imageCom = findViewById(R.id.image_com);
+        txtVs = findViewById(R.id.txtVs);
     }
 
     public void edit(View view) {
@@ -91,17 +106,13 @@ public class MainActivity extends AppCompatActivity {
         if (txtCom.getText().equals("對手已出拳...")) {
             mainJudgment(comMora.getId());
         }
+
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
-
     }
 
-    public void stone(View view) {
-        moraCommon(0, 石頭, "出拳頭");
-    }
+    public void stone(View view) { moraCommon(0, 石頭, "出拳頭"); }
 
-    public void scissors(View view) {
-        moraCommon(1, 剪刀, "出剪刀");
-    }
+    public void scissors(View view) { moraCommon(1, 剪刀, "出剪刀"); }
 
     public void cloth(View view) {
         moraCommon(2, 布, "出布");
@@ -179,6 +190,16 @@ public class MainActivity extends AppCompatActivity {
             txtCom.setText("對手已出拳...");
             txtWinLose.setText("對手已出拳...");
         }
+        txtCom.setVisibility(View.INVISIBLE);
+        txtWinLose.setVisibility(View.INVISIBLE);
+        txt_self.setVisibility(View.INVISIBLE);
+        roomEditText.setVisibility(View.INVISIBLE);
+        btnInitConnect.setVisibility(View.INVISIBLE);
+        btnInitStart.setVisibility(View.INVISIBLE);
+        imageSelf.setVisibility(View.VISIBLE);
+        imageCom.setVisibility(View.VISIBLE);
+        txtVs.setVisibility(View.VISIBLE);
+
     }
 
 }

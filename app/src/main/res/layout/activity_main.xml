@@ -8,26 +8,17 @@
     tools:context=".MainActivity">
 
 
-    <ImageView
-        android:id="@+id/image_self"
+    <TextView
+        android:id="@+id/txt_self"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/txt_self"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="@+id/image_self"
-        app:layout_constraintTop_toBottomOf="@+id/image_self" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txt_com"
@@ -98,5 +89,34 @@
         android:layout_height="134dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_self"
+        android:layout_width="158dp"
+        android:layout_height="163dp"
+        app:layout_constraintBottom_toTopOf="@+id/line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cloth1" />
+
+    <TextView
+        android:id="@+id/txtVs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="V.S."
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/line"
+        app:layout_constraintEnd_toStartOf="@+id/image_com"
+        app:layout_constraintStart_toEndOf="@+id/image_self"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_com"
+        android:layout_width="158dp"
+        android:layout_height="163dp"
+        app:layout_constraintBottom_toTopOf="@+id/line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cloth1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
