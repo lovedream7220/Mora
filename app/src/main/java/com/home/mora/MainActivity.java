@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         txtWinLose.setText("");
         playerMora = 還沒出;
         comMora = 還沒出;
-        Toast.makeText(this, "重新連線", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "重新開始", Toast.LENGTH_SHORT).show();
     }
 
 

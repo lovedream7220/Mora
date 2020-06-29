@@ -25,7 +25,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://db08f7f15594.ngrok.io";
+    private static final String SERVER_PATH = "http://04b54ecd4bd0.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
