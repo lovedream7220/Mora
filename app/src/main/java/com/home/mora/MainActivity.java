@@ -63,10 +63,8 @@ public class MainActivity extends AppCompatActivity {
     public int locationYCom = 0;
     private View lineX0, lineX1, lineY0, lineY1, lineY2, lineY3;
 
-    public View[] locationX = new View[2];
-
-
-    public View[] locationY = new View[4];
+    public View[] locationX = new View[4];
+    public View[] locationY = new View[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
