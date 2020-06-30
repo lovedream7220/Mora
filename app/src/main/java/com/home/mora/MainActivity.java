@@ -26,10 +26,11 @@ public class MainActivity extends AppCompatActivity {
      * 1.增加按鈕可以重新連線 initConnect
      * 2.
      */
-    private TextView txtCom, txtWinLose, txt_self,txtVs;
-    private Button btnInitStart,btnInitConnect;
-    private ImageView imageSelf,imageCom;
+    private TextView txtCom, txtWinLose, txt_self, txtVs;
+    private Button btnInitStart, btnInitConnect;
+    private ImageView imagePlayer, imageCom;
     private EditText roomEditText;
+    public int step;
     //    public String userName;
     WebSocket webSocket;
     ConnectManager connectManager = new ConnectManager(this);
@@ -49,10 +50,15 @@ public class MainActivity extends AppCompatActivity {
      * 紀錄自己的出拳
      */
     public playerMoraList comMora = 還沒出;
-
     /**
      * 紀錄別人的出拳
      */
+
+    public int locationXSelf = 0;
+    public int locationYSelf = 0;
+
+    public int locationXCom = 0;
+    public int locationYCom = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         connectManager.initiateSocketConnection();
         findView();
-        imageSelf.setVisibility(View.INVISIBLE);
-        imageCom.setVisibility(View.INVISIBLE);
-        txtVs.setVisibility(View.INVISIBLE);
+        imageCom.setVisibility(View.VISIBLE);
+
         roomEditText.setText(userName);
+        step = 0;
     }
 
     private void findView() {
@@ -73,9 +79,17 @@ public class MainActivity extends AppCompatActivity {
         roomEditText = findViewById(R.id.roomEditText);
         btnInitStart = findViewById(R.id.initStart);
         btnInitConnect = findViewById(R.id.initConnect);
-        imageSelf = findViewById(R.id.image_self);
         imageCom = findViewById(R.id.image_com);
-        txtVs = findViewById(R.id.txtVs);
+        imageCom.setImageResource(R.drawable.com);
+        imagePlayer = findViewById(R.id.image_player);
+        imagePlayer.setImageResource(R.drawable.player);
+
+    }
+
+
+    public int step() {
+        step = step + 1;
+        return step;
     }
 
     public void edit(View view) {
@@ -99,6 +113,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void moveCommon(int x, int y, String txt) {
+//        locationXSelf = locationXSelf + x;
+//        locationYSelf = locationYSelf + y;
+        imagePlayer.layout(imagePlayer.getLeft() + 100 * x, imagePlayer.getTop() - 100 * y, imagePlayer.getRight() + 100 * x, imagePlayer.getBottom() - 100 * y);
+        connectManager.sendMessage(step(), x, y, "move");
+        Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void moveRight(View view) {
+        moveCommon(1, 0, "向右");
+    }
+
+    public void moveLeft(View view) {
+        moveCommon(-1, 0, "向左");
+    }
+
+    public void moveTop(View view) {
+        moveCommon(0, 1, "向上");
+    }
+
+    public void moveDown(View view) {
+        moveCommon(0, -1, "向下");
+    }
+
+
     public void moraCommon(int mora, playerMoraList playerMoraList, String txt) {
         connectManager.sendMessage(mora, true, "mora");
         playerMora = playerMoraList;
@@ -110,9 +150,13 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
     }
 
-    public void stone(View view) { moraCommon(0, 石頭, "出拳頭"); }
+    public void stone(View view) {
+        moraCommon(0, 石頭, "出拳頭");
+    }
 
-    public void scissors(View view) { moraCommon(1, 剪刀, "出剪刀"); }
+    public void scissors(View view) {
+        moraCommon(1, 剪刀, "出剪刀");
+    }
 
     public void cloth(View view) {
         moraCommon(2, 布, "出布");
@@ -196,9 +240,7 @@ public class MainActivity extends AppCompatActivity {
         roomEditText.setVisibility(View.INVISIBLE);
         btnInitConnect.setVisibility(View.INVISIBLE);
         btnInitStart.setVisibility(View.INVISIBLE);
-        imageSelf.setVisibility(View.VISIBLE);
-        imageCom.setVisibility(View.VISIBLE);
-        txtVs.setVisibility(View.VISIBLE);
+
 
     }
 

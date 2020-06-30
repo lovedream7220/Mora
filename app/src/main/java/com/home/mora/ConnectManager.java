@@ -120,7 +120,7 @@ public class ConnectManager extends AppCompatActivity {
      * @param bool
      * @param kind
      */
-    public void sendMessage(int num, boolean bool, String kind) {
+    public void sendMessage(int num , boolean bool, String kind) {
 //        if (!isReceiving) {
             JSONObject jsonObject = new JSONObject();
             try {
@@ -135,10 +135,29 @@ public class ConnectManager extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
 //        }
     }
 
+
+    public void sendMessage(int step , int x, int y , String kind) {
+//        if (!isReceiving) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("kind", kind);
+            jsonObject.put("USER", activity.userName);
+            switch (kind) {
+                case "move":
+                    jsonObject.put("step", step);
+                    jsonObject.put("x", x);
+                    jsonObject.put("y", y);
+                    webSocket.send(jsonObject.toString());
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        }
+    }
     /**
      * bind with GameActivity
      */
