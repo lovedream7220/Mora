@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     public int locationXCom = 0;
     public int locationYCom = 0;
+    private View line;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         connectManager.initiateSocketConnection();
         findView();
         imageCom.setVisibility(View.VISIBLE);
+//        line.setVisibility(View.INVISIBLE);
 
         roomEditText.setText(userName);
         step = 0;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         imageCom.setImageResource(R.drawable.com);
         imagePlayer = findViewById(R.id.image_player);
         imagePlayer.setImageResource(R.drawable.player);
+        line = findViewById(R.id.line);
 
     }
 
