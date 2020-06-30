@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         roomEditText.setText(userName);
         step = 0;
+
     }
 
     private void findView() {
@@ -114,10 +115,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveCommon(int x, int y, String txt) {
-//        locationXSelf = locationXSelf + x;
-//        locationYSelf = locationYSelf + y;
+//        if (locationXSelf + x > 0 || locationXSelf + x < 6) {
+        locationXSelf = locationXSelf + x;
+//        }
+        locationYSelf = locationYSelf + y;
         imagePlayer.layout(imagePlayer.getLeft() + 100 * x, imagePlayer.getTop() - 100 * y, imagePlayer.getRight() + 100 * x, imagePlayer.getBottom() - 100 * y);
-        connectManager.sendMessage(step(), x, y, "move");
+        connectManager.sendMessage(step(), locationXSelf, locationYSelf, "move");
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
     }
 
@@ -146,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         if (txtCom.getText().equals("對手已出拳...")) {
             mainJudgment(comMora.getId());
         }
-
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
     }
 
@@ -177,6 +179,13 @@ public class MainActivity extends AppCompatActivity {
         playerMora = 還沒出;
         comMora = 還沒出;
         Toast.makeText(this, "重新開始", Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void moveJudgment(int opponentX, int opponentY) {
+        locationXCom = opponentX;
+        locationYCom = opponentY;
+        imageCom.layout(imagePlayer.getLeft() + 100 * opponentX, imagePlayer.getTop() - 100 * opponentY, imagePlayer.getRight() + 100 * opponentX, imagePlayer.getBottom() - 100 * opponentY);
     }
 
 

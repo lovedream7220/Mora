@@ -12,6 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -25,7 +28,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://04b54ecd4bd0.ngrok.io";
+    private static final String SERVER_PATH = "http://f021aa82bcb3.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -62,10 +65,18 @@ public class ConnectManager extends AppCompatActivity {
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
+
             runOnUiThread(() -> {
                 try {
-                    JSONObject jsonObject = new JSONObject(text);
-                    receiveMessage(jsonObject);
+                    System.out.println("text");
+                    System.out.println(text);
+                    JSONArray jsonArray = new JSONArray("[" + text + "]");
+//                    System.out.println(jsonArray.get(0).getClass());
+//                    JSONObject jsonObject = new JSONObject(text);
+//                    JSONObject jsonObject =
+//                    System.out.println(jsonObject.getString());
+                    receiveMessage(jsonArray);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -92,11 +103,12 @@ public class ConnectManager extends AppCompatActivity {
     /**
      * bind with GameActivity
      *
-     * @param jsonObject
+     * @param
      */
-    private void receiveMessage(JSONObject jsonObject) {
+    private void receiveMessage(JSONArray jsonArray) {
 //        isReceiving = true;
         try {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
             String sender = jsonObject.getString("USER");
             switch (jsonObject.getString("kind")) {
                 case "mora":
@@ -106,7 +118,14 @@ public class ConnectManager extends AppCompatActivity {
 //                        isReceiving = false;
                     }
                     break;
-
+                case "move":
+                    if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
+                        int opponentX = jsonObject.getInt("x");
+                        int opponentY = jsonObject.getInt("y");
+                        activity.moveJudgment(opponentX, opponentY);
+//                        isReceiving = false;
+                    }
+                    break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -120,26 +139,26 @@ public class ConnectManager extends AppCompatActivity {
      * @param bool
      * @param kind
      */
-    public void sendMessage(int num , boolean bool, String kind) {
+    public void sendMessage(int num, boolean bool, String kind) {
 //        if (!isReceiving) {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("kind", kind);
-                jsonObject.put("USER", activity.userName);
-                switch (kind) {
-                    case "mora":
-                        jsonObject.put("choose", num);
-                        webSocket.send(jsonObject.toString());
-                        break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("kind", kind);
+            jsonObject.put("USER", activity.userName);
+            switch (kind) {
+                case "mora":
+                    jsonObject.put("choose", num);
+                    webSocket.send(jsonObject.toString());
+                    break;
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 //        }
     }
 
 
-    public void sendMessage(int step , int x, int y , String kind) {
+    public void sendMessage(int step, int x, int y, String kind) {
 //        if (!isReceiving) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -147,7 +166,7 @@ public class ConnectManager extends AppCompatActivity {
             jsonObject.put("USER", activity.userName);
             switch (kind) {
                 case "move":
-                    jsonObject.put("step", step);
+//                    jsonObject.put("step", step);
                     jsonObject.put("x", x);
                     jsonObject.put("y", y);
                     webSocket.send(jsonObject.toString());
@@ -158,6 +177,7 @@ public class ConnectManager extends AppCompatActivity {
         }
 //        }
     }
+
     /**
      * bind with GameActivity
      */
