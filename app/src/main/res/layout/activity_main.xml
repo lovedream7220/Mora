@@ -9,7 +9,7 @@
 
 
     <View
-        android:id="@+id/line10"
+        android:id="@+id/lineY3"
         android:layout_width="2dp"
         android:layout_height="340dp"
         android:layout_above="@+id/twobtn"
@@ -84,8 +84,8 @@
 
     <ImageView
         android:id="@+id/image_player"
-        android:layout_width="74dp"
-        android:layout_height="97dp"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="144dp"
@@ -95,8 +95,8 @@
 
     <ImageView
         android:id="@+id/image_com"
-        android:layout_width="87dp"
-        android:layout_height="83dp"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
         android:layout_marginTop="152dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
@@ -119,7 +119,7 @@
         app:layout_constraintGuide_percent="0.8321168" />
 
     <View
-        android:id="@+id/line"
+        android:id="@+id/lineX0"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_above="@+id/twobtn"
@@ -131,7 +131,7 @@
         app:layout_constraintVertical_bias="0.319" />
 
     <View
-        android:id="@+id/line8"
+        android:id="@+id/lineX1"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_above="@+id/twobtn"
@@ -141,7 +141,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <View
-        android:id="@+id/line7"
+        android:id="@+id/lineY1"
         android:layout_width="2dp"
         android:layout_height="340dp"
         android:layout_above="@+id/twobtn"
@@ -151,7 +151,7 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <View
-        android:id="@+id/line11"
+        android:id="@+id/lineY0"
         android:layout_width="2dp"
         android:layout_height="340dp"
         android:layout_above="@+id/twobtn"
@@ -161,7 +161,7 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <View
-        android:id="@+id/line9"
+        android:id="@+id/lineY2"
         android:layout_width="2dp"
         android:layout_height="340dp"
         android:layout_above="@+id/twobtn"

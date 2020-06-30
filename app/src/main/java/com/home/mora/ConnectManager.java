@@ -110,6 +110,8 @@ public class ConnectManager extends AppCompatActivity {
         try {
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
             String sender = jsonObject.getString("USER");
+
+
             switch (jsonObject.getString("kind")) {
                 case "mora":
                     if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
@@ -124,6 +126,9 @@ public class ConnectManager extends AppCompatActivity {
                         int opponentY = jsonObject.getInt("y");
                         activity.moveJudgment(opponentX, opponentY);
 //                        isReceiving = false;
+                    } else if (sender.equals(activity.userName)) {
+                        int opponentX = jsonObject.getInt("x");
+                        int opponentY = jsonObject.getInt("y");
                     }
                     break;
             }

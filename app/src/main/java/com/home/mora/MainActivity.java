@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import okhttp3.WebSocket;
 
 import static com.home.mora.playerMoraList.*;
@@ -59,17 +61,26 @@ public class MainActivity extends AppCompatActivity {
 
     public int locationXCom = 0;
     public int locationYCom = 0;
-    private View line;
+    private View lineX0, lineX1, lineY0, lineY1, lineY2, lineY3;
+
+    public View[] locationX = new View[2];
+
+
+    public View[] locationY = new View[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectManager.initiateSocketConnection();
-        findView();
-        imageCom.setVisibility(View.VISIBLE);
-//        line.setVisibility(View.INVISIBLE);
+        locationY[0] = lineX0;
+        locationY[1] = lineX1;
 
+        locationX[0] = lineY0;
+        locationX[1] = lineY1;
+        locationX[2] = lineY2;
+        locationX[3] = lineY3;
+        findView();
         roomEditText.setText(userName);
         step = 0;
 
@@ -86,7 +97,15 @@ public class MainActivity extends AppCompatActivity {
         imageCom.setImageResource(R.drawable.com);
         imagePlayer = findViewById(R.id.image_player);
         imagePlayer.setImageResource(R.drawable.player);
-        line = findViewById(R.id.line);
+        lineX0 = findViewById(R.id.lineX0);
+        lineX1 = findViewById(R.id.lineX1);
+        lineY0 = findViewById(R.id.lineY0);
+        lineY1 = findViewById(R.id.lineY1);
+        lineY2 = findViewById(R.id.lineY2);
+        lineY3 = findViewById(R.id.lineY3);
+
+        locationX = new View[]{lineX0, lineX1};
+        locationY = new View[]{lineY0, lineY1, lineY2, lineY3};
 
     }
 
@@ -118,15 +137,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveCommon(int x, int y, String txt) {
-//        if (locationXSelf + x > 0 || locationXSelf + x < 6) {
         locationXSelf = locationXSelf + x;
-//        }
         locationYSelf = locationYSelf + y;
-        imagePlayer.layout(imagePlayer.getLeft() + 100 * x, imagePlayer.getTop() - 100 * y, imagePlayer.getRight() + 100 * x, imagePlayer.getBottom() - 100 * y);
+        System.out.println("locationXSelf : " + locationXSelf);
+        System.out.println("locationYSelf : " + locationYSelf);
+        System.out.println("imagePlayer B: " + imagePlayer.getRight());
+        System.out.println("imagePlayer B: " + imagePlayer.getBottom());
+        imagePlayer.layout(locationY[y].getLeft(), locationX[x].getTop(), locationY[y].getLeft()+50, locationX[x].getTop()+100);
+
+//        imagePlayer.layout(locationY[y].getLeft(), locationX[x].getTop(), locationY[y].getRight(), locationX[x].getTop());
+        System.out.println("imagePlayer A: " + imagePlayer.getRight());
+        System.out.println("imagePlayer A: " + imagePlayer.getBottom());
         connectManager.sendMessage(step(), locationXSelf, locationYSelf, "move");
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
     }
-
 
     public void moveRight(View view) {
         moveCommon(1, 0, "向右");
