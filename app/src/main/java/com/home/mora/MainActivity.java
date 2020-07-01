@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public int locationXCom = 4;
     public int locationYCom = 1;
     private View lineX0, lineX1, lineX2, lineX3, lineX4, lineY0, lineY1, lineY2, lineY3, lineY4;
-
+    public View button, button2, button3, button4, button5, button6;
     public View[] locationX;
     public View[] locationY;
 
@@ -98,7 +98,34 @@ public class MainActivity extends AppCompatActivity {
         lineY0 = findViewById(R.id.lineY0);
         lineY1 = findViewById(R.id.lineY1);
         lineY2 = findViewById(R.id.lineY2);
+        button = findViewById(R.id.button);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
+        button6 = findViewById(R.id.button6);
 
+    }
+
+
+    public void lockBtn() {
+        connectManager.sendMessage(0, locationXSelf, locationYSelf, "move");
+        Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        button.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
+        button5.setEnabled(false);
+        button6.setEnabled(false);
+    }
+
+    public void openBtn() {
+        button.setEnabled(true);
+        button2.setEnabled(true);
+        button3.setEnabled(true);
+        button4.setEnabled(true);
+        button5.setEnabled(true);
+        button6.setEnabled(true);
     }
 
 
@@ -145,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             locationYSelf = locationYSelf + y;
         }
-
+        lockBtn();
         connectManager.sendMessage(step(), locationXSelf, locationYSelf, "move");
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
     }

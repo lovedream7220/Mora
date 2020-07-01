@@ -106,6 +106,7 @@ public class ConnectManager extends AppCompatActivity {
      */
     private void receiveMessage(JSONArray jsonArray) {
 //        isReceiving = true;
+        activity.openBtn();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 System.out.println("執行 : " + i);
