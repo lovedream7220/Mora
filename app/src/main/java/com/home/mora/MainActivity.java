@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void findView() {
-        txtCom = findViewById(R.id.txt_com);
-        txtWinLose = findViewById(R.id.txt_winLose);
-        txt_self = findViewById(R.id.txt_self);
         roomEditText = findViewById(R.id.roomEditText);
         btnInitStart = findViewById(R.id.initStart);
         btnInitConnect = findViewById(R.id.initConnect);
@@ -109,14 +106,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void lockBtn() {
-        connectManager.sendMessage(0, locationXSelf, locationYSelf, "move");
-        Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
-        button.setEnabled(false);
-        button2.setEnabled(false);
-        button3.setEnabled(false);
-        button4.setEnabled(false);
-        button5.setEnabled(false);
-        button6.setEnabled(false);
+//        button.setEnabled(false);
+//        button2.setEnabled(false);
+//        button3.setEnabled(false);
+//        button4.setEnabled(false);
+//        button5.setEnabled(false);
+//        button6.setEnabled(false);
     }
 
     public void openBtn() {
@@ -156,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveCommon(int x, int y, String txt) {
-
         /**邊界限制*/
         if (locationXSelf + x < 0) {
             locationXSelf = 0;
@@ -323,8 +317,8 @@ public class MainActivity extends AppCompatActivity {
         roomEditText.setVisibility(View.INVISIBLE);
         btnInitConnect.setVisibility(View.INVISIBLE);
         btnInitStart.setVisibility(View.INVISIBLE);
-
-
     }
+
+
 
 }
