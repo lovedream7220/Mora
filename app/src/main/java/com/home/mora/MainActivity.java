@@ -57,32 +57,27 @@ public class MainActivity extends AppCompatActivity {
      */
 
     public int locationXSelf = 0;
-    public int locationYSelf = 0;
+    public int locationYSelf = 1;
 
-    public int locationXCom = 0;
-    public int locationYCom = 0;
-    private View lineX0, lineX1, lineY0, lineY1, lineY2, lineY3;
+    public int locationXCom = 4;
+    public int locationYCom = 1;
+    private View lineX0, lineX1, lineX2, lineX3, lineX4, lineY0, lineY1, lineY2, lineY3, lineY4;
 
-    public View[] locationX = new View[4];
-    public View[] locationY = new View[2];
+    public View[] locationX;
+    public View[] locationY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectManager.initiateSocketConnection();
-        locationY[0] = lineX0;
-        locationY[1] = lineX1;
-
-        locationX[0] = lineY0;
-        locationX[1] = lineY1;
-        locationX[2] = lineY2;
-        locationX[3] = lineY3;
         findView();
+        locationX = new View[]{lineX0, lineX1, lineX2, lineX3, lineX4};
+        locationY = new View[]{lineY0, lineY1, lineY2};
         roomEditText.setText(userName);
         step = 0;
-
     }
+
 
     private void findView() {
         txtCom = findViewById(R.id.txt_com);
@@ -97,13 +92,12 @@ public class MainActivity extends AppCompatActivity {
         imagePlayer.setImageResource(R.drawable.player);
         lineX0 = findViewById(R.id.lineX0);
         lineX1 = findViewById(R.id.lineX1);
+        lineX2 = findViewById(R.id.lineX2);
+        lineX3 = findViewById(R.id.lineX3);
+        lineX4 = findViewById(R.id.lineX4);
         lineY0 = findViewById(R.id.lineY0);
         lineY1 = findViewById(R.id.lineY1);
         lineY2 = findViewById(R.id.lineY2);
-        lineY3 = findViewById(R.id.lineY3);
-
-        locationX = new View[]{lineX0, lineX1};
-        locationY = new View[]{lineY0, lineY1, lineY2, lineY3};
 
     }
 
@@ -135,17 +129,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveCommon(int x, int y, String txt) {
-        locationXSelf = locationXSelf + x;
-        locationYSelf = locationYSelf + y;
-        System.out.println("locationXSelf : " + locationXSelf);
-        System.out.println("locationYSelf : " + locationYSelf);
-        System.out.println("imagePlayer B: " + imagePlayer.getRight());
-        System.out.println("imagePlayer B: " + imagePlayer.getBottom());
-        imagePlayer.layout(locationY[y].getLeft(), locationX[x].getTop(), locationY[y].getLeft()+50, locationX[x].getTop()+100);
 
-//        imagePlayer.layout(locationY[y].getLeft(), locationX[x].getTop(), locationY[y].getRight(), locationX[x].getTop());
-        System.out.println("imagePlayer A: " + imagePlayer.getRight());
-        System.out.println("imagePlayer A: " + imagePlayer.getBottom());
+        /**邊界限制*/
+        if (locationXSelf + x < 0) {
+            locationXSelf = 0;
+        } else if (locationXSelf + x > 4) {
+            locationXSelf = 4;
+        } else {
+            locationXSelf = locationXSelf + x;
+        }
+        if (locationYSelf + y < 0) {
+            locationYSelf = 0;
+        } else if (locationYSelf + y > 2) {
+            locationYSelf = 2;
+        } else {
+            locationYSelf = locationYSelf + y;
+        }
+
         connectManager.sendMessage(step(), locationXSelf, locationYSelf, "move");
         Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
     }
@@ -207,12 +207,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void moveJudgment(int opponentX, int opponentY) {
-        locationXCom = opponentX;
-        locationYCom = opponentY;
-        imageCom.layout(imagePlayer.getLeft() + 100 * opponentX, imagePlayer.getTop() - 100 * opponentY, imagePlayer.getRight() + 100 * opponentX, imagePlayer.getBottom() - 100 * opponentY);
+    public void moveJudgmentCom(int x, int y) {
+        /**重新繪製位置*/
+        imageCom.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
+    public void moveJudgmentSelf(int x, int y) {
+        /**重新繪製位置*/
+        imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
+    }
 
     public void mainJudgment(int opponent) {
         System.out.println("comMora : " + opponent);

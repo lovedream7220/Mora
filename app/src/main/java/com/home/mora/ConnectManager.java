@@ -28,7 +28,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://f021aa82bcb3.ngrok.io";
+    private static final String SERVER_PATH = "http://41a12d1fd188.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -108,29 +108,27 @@ public class ConnectManager extends AppCompatActivity {
     private void receiveMessage(JSONArray jsonArray) {
 //        isReceiving = true;
         try {
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            String sender = jsonObject.getString("USER");
-
-
-            switch (jsonObject.getString("kind")) {
-                case "mora":
-                    if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
-                        int opponent = jsonObject.getInt("choose");
-                        activity.mainJudgment(opponent);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                String sender = jsonObject.getString("USER");//被操作人是誰
+                switch (jsonObject.getString("kind")) {
+                    case "mora":
+                        if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
+                            int opponent = jsonObject.getInt("choose");
+                            activity.mainJudgment(opponent);
 //                        isReceiving = false;
-                    }
-                    break;
-                case "move":
-                    if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
-                        int opponentX = jsonObject.getInt("x");
-                        int opponentY = jsonObject.getInt("y");
-                        activity.moveJudgment(opponentX, opponentY);
-//                        isReceiving = false;
-                    } else if (sender.equals(activity.userName)) {
-                        int opponentX = jsonObject.getInt("x");
-                        int opponentY = jsonObject.getInt("y");
-                    }
-                    break;
+                        }
+                        break;
+                    case "move":
+                        int x = jsonObject.getInt("x");
+                        int y = jsonObject.getInt("y");
+                        if (sender.equals(activity.userName)) {
+                            activity.moveJudgmentSelf(x, y);
+                        } else {
+                            activity.moveJudgmentCom(x, y);
+                        }
+                        break;
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
