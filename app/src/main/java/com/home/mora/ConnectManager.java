@@ -28,7 +28,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://41a12d1fd188.ngrok.io";
+    private static final String SERVER_PATH = "http://9c2ccb959948.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -68,7 +68,6 @@ public class ConnectManager extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 try {
-                    System.out.println("text");
                     System.out.println(text);
                     JSONArray jsonArray = new JSONArray("[" + text + "]");
 //                    System.out.println(jsonArray.get(0).getClass());
@@ -109,6 +108,7 @@ public class ConnectManager extends AppCompatActivity {
 //        isReceiving = true;
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
+                System.out.println("執行 : " + i);
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 String sender = jsonObject.getString("USER");//被操作人是誰
                 switch (jsonObject.getString("kind")) {
@@ -122,6 +122,7 @@ public class ConnectManager extends AppCompatActivity {
                     case "move":
                         int x = jsonObject.getInt("x");
                         int y = jsonObject.getInt("y");
+                        System.out.println("是不是自己要移動 : " + sender.equals(activity.userName));
                         if (sender.equals(activity.userName)) {
                             activity.moveJudgmentSelf(x, y);
                         } else {
