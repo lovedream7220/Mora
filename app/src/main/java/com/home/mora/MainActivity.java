@@ -210,20 +210,20 @@ public class MainActivity extends AppCompatActivity {
     public void moveJudgmentCom(int x, int y) {
         /**重新繪製位置*/
         switch (x) {
-            case 5:
-                x = 1;
-                break;
             case 4:
-                x = 2;
+                x = 0;
                 break;
             case 3:
-                x = 3;
+                x = 1;
                 break;
             case 2:
-                x = 4;
+                x = 2;
                 break;
             case 1:
-                x = 5;
+                x = 3;
+                break;
+            case 0:
+                x = 4;
                 break;
         }
         imageCom.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
