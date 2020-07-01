@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
      * 1.增加按鈕可以重新連線 initConnect
      * 2.
      */
-    private TextView txtCom, txtWinLose, txt_self, txtVs;
+    private TextView txtCom, txtWinLose, txt_self, txtVs, txt_self_name;
     private Button btnInitStart, btnInitConnect;
     private ImageView imagePlayer, imageCom;
     private EditText roomEditText;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public int locationXCom = 4;
     public int locationYCom = 1;
     private View lineX0, lineX1, lineX2, lineX3, lineX4, lineY0, lineY1, lineY2, lineY3, lineY4;
+    private TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
     public View[] locationX;
     public View[] locationY;
@@ -101,17 +102,22 @@ public class MainActivity extends AppCompatActivity {
         button4 = findViewById(R.id.button4);
         button5 = findViewById(R.id.button5);
         button6 = findViewById(R.id.button6);
-
+        txt_self_name = findViewById(R.id.txt_self_name);
+        txt_self_name.setText(userName);
+        txt_self_hp = findViewById(R.id.txt_self_hp);
+        txt_self_mp = findViewById(R.id.txt_self_mp);
+        txt_com_hp = findViewById(R.id.txt_com_hp);
+        txt_com_mp = findViewById(R.id.txt_com_mp);
     }
 
 
     public void lockBtn() {
-//        button.setEnabled(false);
-//        button2.setEnabled(false);
-//        button3.setEnabled(false);
-//        button4.setEnabled(false);
-//        button5.setEnabled(false);
-//        button6.setEnabled(false);
+        button.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
+        button5.setEnabled(false);
+        button6.setEnabled(false);
     }
 
     public void openBtn() {
@@ -187,6 +193,31 @@ public class MainActivity extends AppCompatActivity {
         moveCommon(0, -1, "向下");
     }
 
+    public void atkCommon(int[][] atkRange) {
+
+    }
+
+    public void tool1(View view) {
+        int[][] atkRange = {{locationXSelf - 1, locationYSelf}, {locationXSelf, locationYSelf}, {locationXSelf + 1, locationYSelf}};
+    }
+
+    public void tool2(View view) {
+        int[][] atkRange = {{locationXSelf - 1, locationYSelf - 1}, {locationXSelf - 1, locationYSelf + 1}, {locationXSelf, locationYSelf}, {locationXSelf + 1, locationYSelf - 1}, {locationXSelf + 1, locationYSelf + 1}};
+    }
+
+    public void atkJudgment(int[][] atkRange, int hp) {
+        int[] comXY = {locationXCom, locationYCom};
+        boolean success = false;
+        for (int[] el : atkRange) {
+            if (el == comXY) {
+                success = true;
+            }
+        }
+        if (success) {
+            txt_com_hp.setText(Integer.parseInt(txt_com_hp.toString()) - hp);
+        }
+    }
+
 
     public void moraCommon(int mora, playerMoraList playerMoraList, String txt) {
         connectManager.sendMessage(mora, true, "mora");
@@ -219,11 +250,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initStart(View view) {
-        txt_self.setText("");
-        txtCom.setText("");
-        txtWinLose.setText("");
-        playerMora = 還沒出;
-        comMora = 還沒出;
         Toast.makeText(this, "重新開始", Toast.LENGTH_SHORT).show();
     }
 
@@ -247,6 +273,8 @@ public class MainActivity extends AppCompatActivity {
                 x = 4;
                 break;
         }
+        locationXCom = x;
+        locationYCom = y;
         imageCom.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
@@ -318,7 +346,6 @@ public class MainActivity extends AppCompatActivity {
         btnInitConnect.setVisibility(View.INVISIBLE);
         btnInitStart.setVisibility(View.INVISIBLE);
     }
-
 
 
 }
