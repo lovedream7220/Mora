@@ -28,7 +28,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://9c2ccb959948.ngrok.io";
+    private static final String SERVER_PATH = "http://c0230b80e2a0.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -113,13 +113,6 @@ public class ConnectManager extends AppCompatActivity {
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 String sender = jsonObject.getString("USER");//被操作人是誰
                 switch (jsonObject.getString("kind")) {
-                    case "mora":
-                        if (!sender.equals(activity.userName)) { // 當發送者跟接收者名稱不同時才觸發
-                            int opponent = jsonObject.getInt("choose");
-                            activity.mainJudgment(opponent);
-//                        isReceiving = false;
-                        }
-                        break;
                     case "move":
                         int x = jsonObject.getInt("x");
                         int y = jsonObject.getInt("y");
@@ -130,6 +123,16 @@ public class ConnectManager extends AppCompatActivity {
                             activity.moveJudgmentCom(x, y);
                         }
                         break;
+                    case "atk":
+                        System.out.println("是不是自己要攻擊 : " + sender.equals(activity.userName));
+                        int atk = jsonObject.getInt("atk");
+                        System.out.println("使用第 " + atk + " 招");
+                        if (sender.equals(activity.userName)) {
+                            activity.atkJudgmentSelf(atk);
+                        } else {
+                            activity.atkJudgmentCom(atk);
+                        }
+                        break;
                 }
             }
         } catch (JSONException e) {
@@ -137,15 +140,14 @@ public class ConnectManager extends AppCompatActivity {
         }
     }
 
+
     /**
      * bind with GameActivity
      *
      * @param num
-     * @param bool
      * @param kind
      */
-    public void sendMessage(int num, boolean bool, String kind) {
-//        if (!isReceiving) {
+    public void sendMessage(int num, String kind) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("kind", kind);
@@ -155,11 +157,14 @@ public class ConnectManager extends AppCompatActivity {
                     jsonObject.put("choose", num);
                     webSocket.send(jsonObject.toString());
                     break;
+                case "atk":
+                    jsonObject.put("atk", num);
+                    webSocket.send(jsonObject.toString());
+                    break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        }
     }
 
 

@@ -8,6 +8,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     //    public String userName;
     WebSocket webSocket;
     ConnectManager connectManager = new ConnectManager(this);
+    AtkKind atkKind = new AtkKind();
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
      */
@@ -47,14 +49,6 @@ public class MainActivity extends AppCompatActivity {
 //        石頭, 剪刀, 布, 還沒出
 //    }
 
-    public playerMoraList playerMora = 還沒出;
-    /**
-     * 紀錄自己的出拳
-     */
-    public playerMoraList comMora = 還沒出;
-    /**
-     * 紀錄別人的出拳
-     */
 
     public int locationXSelf = 0;
     public int locationYSelf = 1;
@@ -193,52 +187,80 @@ public class MainActivity extends AppCompatActivity {
         moveCommon(0, -1, "向下");
     }
 
-    public void atkCommon(int[][] atkRange) {
-
+    public void atkCommon(int atk) {
+        connectManager.sendMessage(atk, "atk");
     }
 
     public void tool1(View view) {
-        int[][] atkRange = {{locationXSelf - 1, locationYSelf}, {locationXSelf, locationYSelf}, {locationXSelf + 1, locationYSelf}};
+        atkCommon(1);
     }
 
     public void tool2(View view) {
+        atkCommon(2);
         int[][] atkRange = {{locationXSelf - 1, locationYSelf - 1}, {locationXSelf - 1, locationYSelf + 1}, {locationXSelf, locationYSelf}, {locationXSelf + 1, locationYSelf - 1}, {locationXSelf + 1, locationYSelf + 1}};
     }
 
-    public void atkJudgment(int[][] atkRange, int hp) {
-        int[] comXY = {locationXCom, locationYCom};
+    public int[][] getAtkRange(String who, int atkKindNum) {
+        atkKindNum = atkKindNum - 1;
+        int[][] atkRange = atkKind.getAtk(atkKindNum);
+
+        if (who.equals("自己")) {
+            for (int i = 0; i < atkRange.length; i++) {
+                atkRange[i][0] = locationXSelf + atkRange[i][0];
+                atkRange[i][1] = locationYSelf + atkRange[i][1];
+            }
+        } else if (who.equals("對手")) {
+            for (int i = 0; i < atkRange.length; i++) {
+                atkRange[i][0] = locationXCom + atkRange[i][0];
+                atkRange[i][1] = locationYCom + atkRange[i][1];
+            }
+        }
+        return atkRange;
+    }
+
+    public int getAtkHP(int atkKindNum) {
+        atkKindNum = atkKindNum - 1;
+        return atkKind.getAtkHP(atkKindNum);
+    }
+
+    public int getAtkMP(int atkKindNum) {
+        atkKindNum = atkKindNum - 1;
+        return atkKind.getAtkMP(atkKindNum);
+    }
+
+
+    public void atkJudgmentSelf(int atkKindNum) {
+        int[] XY = {locationXCom, locationYCom};
         boolean success = false;
-        for (int[] el : atkRange) {
-            if (el == comXY) {
+        System.out.println("敵人所在位置" + XY);
+
+
+        for (int[] el : getAtkRange("自己", atkKindNum)) {
+            System.out.println("攻擊成功的位置 : " + el);
+            if (String.valueOf(XY).equals(String.valueOf(el))) {
                 success = true;
             }
         }
+        System.out.println("自己是否攻擊成功 : " + success);
         if (success) {
-            txt_com_hp.setText(Integer.parseInt(txt_com_hp.toString()) - hp);
+            txt_com_hp.setText(Integer.parseInt(txt_com_hp.toString()) - getAtkHP(atkKindNum));
         }
     }
 
-
-    public void moraCommon(int mora, playerMoraList playerMoraList, String txt) {
-        connectManager.sendMessage(mora, true, "mora");
-        playerMora = playerMoraList;
-        txt_self.setText(txt);
-        if (txtCom.getText().equals("對手已出拳...")) {
-            mainJudgment(comMora.getId());
+    public void atkJudgmentCom(int atkKindNum) {
+        int[] XY = {locationXSelf, locationYSelf};
+        boolean success = false;
+        System.out.println("自己所在位置" + XY);
+        for (int[] el : getAtkRange("敵人", atkKindNum)) {
+            System.out.println("攻擊成功的位置 : " + el);
+            if (String.valueOf(XY).equals(String.valueOf(el))) {//冠宇寫的
+                success = true;
+            }
         }
-        Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
-    }
-
-    public void stone(View view) {
-        moraCommon(0, 石頭, "出拳頭");
-    }
-
-    public void scissors(View view) {
-        moraCommon(1, 剪刀, "出剪刀");
-    }
-
-    public void cloth(View view) {
-        moraCommon(2, 布, "出布");
+        System.out.println("敵人是否攻擊成功 : " + success);
+        if (success) {
+            txt_com_hp.setText(Integer.parseInt(txt_com_hp.toString()) - getAtkHP(atkKindNum));
+        }
     }
 
     public void initConnect(View view) {
@@ -283,68 +305,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("移動的座標x : " + x);
         System.out.println("移動的座標y : " + y);
         imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
-    }
-
-    public void mainJudgment(int opponent) {
-        System.out.println("comMora : " + opponent);
-        comMora = enumOfId(opponent);
-        System.out.println("comMora : " + comMora);
-
-        if (playerMora == 石頭) {
-            switch (comMora) {
-                case 石頭:
-                    txtCom.setText("對手出拳頭");
-                    txtWinLose.setText("平手");
-                    break;
-                case 剪刀:
-                    txtCom.setText("對手出剪刀");
-                    txtWinLose.setText("你贏了");
-                    break;
-                case 布:
-                    txtCom.setText("對手出布");
-                    txtWinLose.setText("你輸了");
-                    break;
-            }
-        } else if (playerMora == 剪刀) {
-            switch (comMora) {
-                case 石頭:
-                    txtCom.setText("對手出拳頭");
-                    txtWinLose.setText("你輸了");
-                    break;
-                case 剪刀:
-                    txtCom.setText("對手出剪刀");
-                    txtWinLose.setText("平手");
-                    break;
-                case 布:
-                    txtCom.setText("對手出布");
-                    txtWinLose.setText("你贏了");
-                    break;
-            }
-        } else if (playerMora == 布) {
-            switch (comMora) {
-                case 石頭:
-                    txtCom.setText("對手出拳頭");
-                    txtWinLose.setText("你贏了");
-                    break;
-                case 剪刀:
-                    txtCom.setText("對手出剪刀");
-                    txtWinLose.setText("你輸了");
-                    break;
-                case 布:
-                    txtCom.setText("對手出布");
-                    txtWinLose.setText("平手");
-                    break;
-            }
-        } else if (playerMora == 還沒出) {
-            txtCom.setText("對手已出拳...");
-            txtWinLose.setText("對手已出拳...");
-        }
-        txtCom.setVisibility(View.INVISIBLE);
-        txtWinLose.setVisibility(View.INVISIBLE);
-        txt_self.setVisibility(View.INVISIBLE);
-        roomEditText.setVisibility(View.INVISIBLE);
-        btnInitConnect.setVisibility(View.INVISIBLE);
-        btnInitStart.setVisibility(View.INVISIBLE);
     }
 
 
