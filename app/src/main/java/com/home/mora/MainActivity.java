@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     //    public String userName;
     WebSocket webSocket;
     ConnectManager connectManager = new ConnectManager(this);
-    AtkKind atkKind = new AtkKind();
+//    AtkKind atkKind = new AtkKind();
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
      */
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     public int locationXCom = 4;
     public int locationYCom = 1;
     private View lineX0, lineX1, lineX2, lineX3, lineX4, lineY0, lineY1, lineY2, lineY3, lineY4;
+    private View atkKJ00, atkKJ10, atkKJ20, atkKJ30, atkKJ40;
+    private View atkKJ01, atkKJ11, atkKJ21, atkKJ31, atkKJ41;
+    private View atkKJ02, atkKJ12, atkKJ22, atkKJ32, atkKJ42;
     private TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
     public View[] locationX;
@@ -102,8 +107,42 @@ public class MainActivity extends AppCompatActivity {
         txt_self_mp = findViewById(R.id.txt_self_mp);
         txt_com_hp = findViewById(R.id.txt_com_hp);
         txt_com_mp = findViewById(R.id.txt_com_mp);
+        atkKJ00 = findViewById(R.id.atkKJ00);
+        atkKJ10 = findViewById(R.id.atkKJ10);
+        atkKJ20 = findViewById(R.id.atkKJ20);
+        atkKJ30 = findViewById(R.id.atkKJ30);
+        atkKJ40 = findViewById(R.id.atkKJ40);
+        atkKJ01 = findViewById(R.id.atkKJ01);
+        atkKJ11 = findViewById(R.id.atkKJ11);
+        atkKJ21 = findViewById(R.id.atkKJ21);
+        atkKJ31 = findViewById(R.id.atkKJ31);
+        atkKJ41 = findViewById(R.id.atkKJ41);
+        atkKJ02 = findViewById(R.id.atkKJ02);
+        atkKJ12 = findViewById(R.id.atkKJ12);
+        atkKJ22 = findViewById(R.id.atkKJ22);
+        atkKJ32 = findViewById(R.id.atkKJ32);
+        atkKJ42 = findViewById(R.id.atkKJ42);
+        visibility();
     }
 
+
+    public void visibility() {
+        atkKJ00.setVisibility(View.INVISIBLE);
+        atkKJ10.setVisibility(View.INVISIBLE);
+        atkKJ20.setVisibility(View.INVISIBLE);
+        atkKJ30.setVisibility(View.INVISIBLE);
+        atkKJ40.setVisibility(View.INVISIBLE);
+        atkKJ01.setVisibility(View.INVISIBLE);
+        atkKJ11.setVisibility(View.INVISIBLE);
+        atkKJ21.setVisibility(View.INVISIBLE);
+        atkKJ31.setVisibility(View.INVISIBLE);
+        atkKJ41.setVisibility(View.INVISIBLE);
+        atkKJ02.setVisibility(View.INVISIBLE);
+        atkKJ12.setVisibility(View.INVISIBLE);
+        atkKJ22.setVisibility(View.INVISIBLE);
+        atkKJ32.setVisibility(View.INVISIBLE);
+        atkKJ42.setVisibility(View.INVISIBLE);
+    }
 
     public void lockBtn() {
         button.setEnabled(false);
@@ -144,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 userName = s.toString();
-                System.out.println("userName : " + userName);
+                showLog("userName : " + userName);
                 /** 將使用者名稱紀錄進手機內存*/
             }
         });
@@ -197,69 +236,160 @@ public class MainActivity extends AppCompatActivity {
 
     public void tool2(View view) {
         atkCommon(2);
-        int[][] atkRange = {{locationXSelf - 1, locationYSelf - 1}, {locationXSelf - 1, locationYSelf + 1}, {locationXSelf, locationYSelf}, {locationXSelf + 1, locationYSelf - 1}, {locationXSelf + 1, locationYSelf + 1}};
     }
+
+    public int[][] atkRangeO;
 
     public int[][] getAtkRange(String who, int atkKindNum) {
         atkKindNum = atkKindNum - 1;
-        int[][] atkRange = atkKind.getAtk(atkKindNum);
-
+        atkRangeO = AtkKind.getAtk(atkKindNum);
+        int[][] atkRangeX = new int[atkRangeO.length][2];
+        System.out.println("攻擊範圍");
         if (who.equals("自己")) {
-            for (int i = 0; i < atkRange.length; i++) {
-                atkRange[i][0] = locationXSelf + atkRange[i][0];
-                atkRange[i][1] = locationYSelf + atkRange[i][1];
+            for (int i = 0; i < atkRangeO.length; i++) {
+                System.out.println("原本的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
+                atkRangeX[i][0] = locationXSelf + atkRangeO[i][0];
+                atkRangeX[i][1] = locationYSelf + atkRangeO[i][1];
+                System.out.println("調整過的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
             }
-        } else if (who.equals("對手")) {
-            for (int i = 0; i < atkRange.length; i++) {
-                atkRange[i][0] = locationXCom + atkRange[i][0];
-                atkRange[i][1] = locationYCom + atkRange[i][1];
+        } else if (who.equals("敵人")) {
+            for (int i = 0; i < atkRangeO.length; i++) {
+                System.out.println("敵人原本的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
+                atkRangeX[i][0] = locationXCom + atkRangeO[i][0];
+                atkRangeX[i][1] = locationYCom + atkRangeO[i][1];
+                System.out.println("敵人調整過的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
             }
         }
-        return atkRange;
+        atkJudgmentCommonRange(atkRangeX);
+        return atkRangeX;
     }
 
     public int getAtkHP(int atkKindNum) {
         atkKindNum = atkKindNum - 1;
-        return atkKind.getAtkHP(atkKindNum);
+        return AtkKind.getAtkHP(atkKindNum);
     }
 
     public int getAtkMP(int atkKindNum) {
         atkKindNum = atkKindNum - 1;
-        return atkKind.getAtkMP(atkKindNum);
+        return AtkKind.getAtkMP(atkKindNum);
+    }
+
+
+    public void atkJudgmentCommon(int atkKindNum) {
+        /**先扣魔力*/
+        int mp = Integer.parseInt(txt_self_mp.getText().toString()) - getAtkMP(atkKindNum);
+        txt_self_mp.setText(String.valueOf(mp));
+    }
+
+    public void atkJudgmentCommonRange(int[][] range) {
+//        if("敵人") {
+//            switch (x) {
+//                case 4:
+//                    x = 0;
+//                    break;
+//                case 3:
+//                    x = 1;
+//                    break;
+//                case 2:
+//                    x = 2;
+//                    break;
+//                case 1:
+//                    x = 3;
+//                    break;
+//                case 0:
+//                    x = 4;
+//                    break;
+//            }
+//        }
+
+        for (int i = 0; i < range.length; i++) {
+            if (range[i][0] >= 0 && range[i][1] >= 0 && range[i][0] < 5 && range[i][1] < 3) {
+                System.out.println("燃燒的地方 : " + range[i][0] + "," + range[i][1]);
+                switch (range[i][0] * 10 + range[i][1]) {
+                    case 0:
+                        atkKJ00.setVisibility(View.VISIBLE);
+                        break;
+                    case 10:
+                        atkKJ10.setVisibility(View.VISIBLE);
+                        break;
+                    case 20:
+                        atkKJ20.setVisibility(View.VISIBLE);
+                        break;
+                    case 30:
+                        atkKJ30.setVisibility(View.VISIBLE);
+                        break;
+                    case 40:
+                        atkKJ40.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        atkKJ01.setVisibility(View.VISIBLE);
+                        break;
+                    case 11:
+                        atkKJ11.setVisibility(View.VISIBLE);
+                        break;
+                    case 21:
+                        atkKJ21.setVisibility(View.VISIBLE);
+                        break;
+                    case 31:
+                        atkKJ31.setVisibility(View.VISIBLE);
+                        break;
+                    case 41:
+                        atkKJ41.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        atkKJ02.setVisibility(View.VISIBLE);
+                        break;
+                    case 12:
+                        atkKJ12.setVisibility(View.VISIBLE);
+                        break;
+                    case 22:
+                        atkKJ22.setVisibility(View.VISIBLE);
+                        break;
+                    case 32:
+                        atkKJ32.setVisibility(View.VISIBLE);
+                        break;
+                    case 42:
+                        atkKJ42.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        }
     }
 
 
     public void atkJudgmentSelf(int atkKindNum) {
+        atkJudgmentCommon(atkKindNum);
         int[] XY = {locationXCom, locationYCom};
         boolean success = false;
-        System.out.println("敵人所在位置" + XY);
-
-
+        showLog("敵人所在位置" + XY[0] + " " + XY[1]);
         for (int[] el : getAtkRange("自己", atkKindNum)) {
-            System.out.println("攻擊成功的位置 : " + el);
-            if (String.valueOf(XY).equals(String.valueOf(el))) {
+            showLog("攻擊成功的位置 : " + el[0] + " " + el[1]);
+            if (XY[0] == el[0] && XY[1] == el[1]) {
                 success = true;
             }
         }
-        System.out.println("自己是否攻擊成功 : " + success);
+        showLog("自己是否攻擊成功 : " + success + "");
         if (success) {
-            txt_com_hp.setText(Integer.parseInt(txt_com_hp.toString()) - getAtkHP(atkKindNum));
+            int hp = Integer.parseInt(txt_com_hp.getText().toString()) - getAtkHP(atkKindNum);
+            txt_com_hp.setText(String.valueOf(hp));
         }
     }
 
     public void atkJudgmentCom(int atkKindNum) {
+        atkJudgmentCommon(atkKindNum);
         int[] XY = {locationXSelf, locationYSelf};
         boolean success = false;
-        System.out.println("自己所在位置" + XY);
+//        showLog("敵人所在位置" + XY[0] + " " + XY[1]);
         for (int[] el : getAtkRange("敵人", atkKindNum)) {
-            System.out.println("攻擊成功的位置 : " + el);
-            if (String.valueOf(XY).equals(String.valueOf(el))) {//冠宇寫的
+//            showLog("攻擊成功的位置 : " + el[0] + " " + el[1]);
+            if (XY[0] == el[0] && XY[1] == el[1]) {
                 success = true;
             }
         }
-        System.out.println("敵人是否攻擊成功 : " + success);
+        showLog("敵人是否攻擊成功 : ", success + "");
         if (success) {
-            txt_com_hp.setText(Integer.parseInt(txt_com_hp.toString()) - getAtkHP(atkKindNum));
+            int hp = Integer.parseInt(txt_self_hp.getText().toString()) - getAtkHP(atkKindNum);
+            txt_self_hp.setText(String.valueOf(hp));
         }
     }
 
@@ -302,10 +432,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void moveJudgmentSelf(int x, int y) {
         /**重新繪製位置*/
-        System.out.println("移動的座標x : " + x);
-        System.out.println("移動的座標y : " + y);
+        showLog("移動的座標x : ", x + "");
+        showLog("移動的座標y : ", y + "");
         imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
+    public void showLog(String... x) {
+//        System.out.println(x);
+    }
 
 }
