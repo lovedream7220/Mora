@@ -28,7 +28,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://c0230b80e2a0.ngrok.io";
+    private static final String SERVER_PATH = "http://d5ccb4eaa732.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -110,11 +110,11 @@ public class ConnectManager extends AppCompatActivity {
         activity.visibility();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
-                System.out.println("執行 : " + i);
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 String sender = jsonObject.getString("USER");//被操作人是誰
                 switch (jsonObject.getString("kind")) {
                     case "move":
+                        System.out.println("執行 : " + i);
                         int x = jsonObject.getInt("x");
                         int y = jsonObject.getInt("y");
                         System.out.println("是不是自己要移動 : " + sender.equals(activity.userName));
@@ -124,18 +124,29 @@ public class ConnectManager extends AppCompatActivity {
                             activity.moveJudgmentCom(x, y);
                         }
                         break;
+                }
+            }
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                String sender = jsonObject.getString("USER");//被操作人是誰
+                switch (jsonObject.getString("kind")) {
                     case "atk":
+                        System.out.println("執行 : " + i);
                         System.out.println("是不是自己要攻擊 : " + sender.equals(activity.userName));
                         int atk = jsonObject.getInt("atk");
                         System.out.println("使用第 " + atk + " 招");
                         if (sender.equals(activity.userName)) {
                             activity.atkJudgmentSelf(atk);
+
                         } else {
                             activity.atkJudgmentCom(atk);
+
                         }
                         break;
                 }
             }
+            activity.confirmPlace();
+            activity.initAtkRange();
         } catch (JSONException e) {
             e.printStackTrace();
         }

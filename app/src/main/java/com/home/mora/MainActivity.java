@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.WebSocket;
 
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
      */
     String[] text1 = {"預言家", "女巫", "獵人", "騎士", "守衛", "禁言長老",
             "魔術師", "通靈師", "熊", "白癡", "炸彈人", "守墓人", "九尾妖狐"};
-    public String userName = text1[(int) (Math.random() * text1.length)] + (int) (Math.random() * 999 + 1);
+    public String userName = text1[(int) (Math.random() * text1.length)] + (int) (Math.random() * 9999 + 1);
 
 //    public enum playerMoraList {
 //        石頭, 剪刀, 布, 還沒出
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private View atkKJ00, atkKJ10, atkKJ20, atkKJ30, atkKJ40;
     private View atkKJ01, atkKJ11, atkKJ21, atkKJ31, atkKJ41;
     private View atkKJ02, atkKJ12, atkKJ22, atkKJ32, atkKJ42;
+    //    public View atkKJ;
     private TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
     public View[] locationX;
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("重新啟動---------");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectManager.initiateSocketConnection();
@@ -122,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
         atkKJ22 = findViewById(R.id.atkKJ22);
         atkKJ32 = findViewById(R.id.atkKJ32);
         atkKJ42 = findViewById(R.id.atkKJ42);
+//        atkKJ =
+//        atkKJ = findViewById(R.id.atkKJ);
+//        atkKJ.setBackgroundColor(Color.RED);
         visibility();
     }
 
@@ -239,28 +247,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int[][] atkRangeO;
+    public int[][] atkRangeSelf;
+    public int[][] atkRangeCom;
+    public int[][] atkRangeDD;
+
+    public void initAtkRange(){
+        atkRangeO = null;
+        atkRangeSelf = null ;
+        atkRangeCom = null;
+        atkRangeDD = null;
+    }
 
     public int[][] getAtkRange(String who, int atkKindNum) {
+        /**會記錄玩家攻擊的位置方便後續計算*/
         atkKindNum = atkKindNum - 1;
         atkRangeO = AtkKind.getAtk(atkKindNum);
         int[][] atkRangeX = new int[atkRangeO.length][2];
-        System.out.println("攻擊範圍");
         if (who.equals("自己")) {
             for (int i = 0; i < atkRangeO.length; i++) {
-                System.out.println("原本的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
                 atkRangeX[i][0] = locationXSelf + atkRangeO[i][0];
                 atkRangeX[i][1] = locationYSelf + atkRangeO[i][1];
-                System.out.println("調整過的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
+            }
+            atkRangeSelf = new int[atkRangeX.length][];
+            for (int k = 0; k < atkRangeX.length; k++) {
+                atkRangeSelf[k] = atkRangeX[k].clone();
             }
         } else if (who.equals("敵人")) {
             for (int i = 0; i < atkRangeO.length; i++) {
-                System.out.println("敵人原本的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
                 atkRangeX[i][0] = locationXCom + atkRangeO[i][0];
                 atkRangeX[i][1] = locationYCom + atkRangeO[i][1];
-                System.out.println("敵人調整過的位置" + atkRangeO[i][0] + "," + atkRangeO[i][1]);
+            }
+            atkRangeCom = new int[atkRangeX.length][];
+            for (int k = 0; k < atkRangeX.length; k++) {
+                atkRangeCom[k] = atkRangeX[k].clone();
             }
         }
-        atkJudgmentCommonRange(atkRangeX);
+        atkJudgmentCommonRange(who, atkRangeX);
         return atkRangeX;
     }
 
@@ -281,74 +303,104 @@ public class MainActivity extends AppCompatActivity {
         txt_self_mp.setText(String.valueOf(mp));
     }
 
-    public void atkJudgmentCommonRange(int[][] range) {
-//        if("敵人") {
-//            switch (x) {
-//                case 4:
-//                    x = 0;
-//                    break;
-//                case 3:
-//                    x = 1;
-//                    break;
-//                case 2:
-//                    x = 2;
-//                    break;
-//                case 1:
-//                    x = 3;
-//                    break;
-//                case 0:
-//                    x = 4;
-//                    break;
-//            }
-//        }
 
+    public void rangeSame() {
+        List<Integer> listX = new ArrayList<>();
+        List<Integer> listY = new ArrayList<>();
+        if ((atkRangeCom != null) && (atkRangeSelf != null)) {
+            for (int i = 0; i < atkRangeCom.length; i++) {
+                for (int j = 0; j < atkRangeSelf.length; j++) {
+                    if (atkRangeCom[i][0] * 10 + atkRangeCom[i][1] == atkRangeSelf[j][0] * 10 + atkRangeSelf[j][1]) {
+                        listX.add(atkRangeCom[i][0]);
+                        listY.add(atkRangeCom[i][1]);
+                    }
+                }
+            }
+
+            atkRangeDD = new int[listX.size()][2];
+            for (int i = 0; i < listX.size(); i++) {
+                atkRangeDD[i][0] = listX.get(i);
+                atkRangeDD[i][1] = listY.get(i);
+            }
+
+            if (atkRangeDD != null) {
+                atkJudgmentCommonRange("同個位置", atkRangeDD);
+            }
+        }
+    }
+
+    public void atkJudgmentCommonRange(String x, int[][] range) {
+        Resources res = getResources();
+        Drawable drawable;
+        drawable = res.getDrawable(R.drawable.atk);
+        if (x.equals("敵人")) {
+            drawable = res.getDrawable(R.drawable.atkc);
+        }
+        if (x.equals("同個位置")) {
+            drawable = res.getDrawable(R.drawable.atkt);
+        }
         for (int i = 0; i < range.length; i++) {
             if (range[i][0] >= 0 && range[i][1] >= 0 && range[i][0] < 5 && range[i][1] < 3) {
                 System.out.println("燃燒的地方 : " + range[i][0] + "," + range[i][1]);
                 switch (range[i][0] * 10 + range[i][1]) {
                     case 0:
+                        atkKJ00.setBackgroundDrawable(drawable);
                         atkKJ00.setVisibility(View.VISIBLE);
                         break;
                     case 10:
+                        atkKJ10.setBackgroundDrawable(drawable);
                         atkKJ10.setVisibility(View.VISIBLE);
                         break;
                     case 20:
+                        atkKJ20.setBackgroundDrawable(drawable);
                         atkKJ20.setVisibility(View.VISIBLE);
                         break;
                     case 30:
+                        atkKJ30.setBackgroundDrawable(drawable);
                         atkKJ30.setVisibility(View.VISIBLE);
                         break;
                     case 40:
+                        atkKJ40.setBackgroundDrawable(drawable);
                         atkKJ40.setVisibility(View.VISIBLE);
                         break;
                     case 1:
+                        atkKJ01.setBackgroundDrawable(drawable);
                         atkKJ01.setVisibility(View.VISIBLE);
                         break;
                     case 11:
+                        atkKJ11.setBackgroundDrawable(drawable);
                         atkKJ11.setVisibility(View.VISIBLE);
                         break;
                     case 21:
+                        atkKJ21.setBackgroundDrawable(drawable);
                         atkKJ21.setVisibility(View.VISIBLE);
                         break;
                     case 31:
+                        atkKJ31.setBackgroundDrawable(drawable);
                         atkKJ31.setVisibility(View.VISIBLE);
                         break;
                     case 41:
+                        atkKJ41.setBackgroundDrawable(drawable);
                         atkKJ41.setVisibility(View.VISIBLE);
                         break;
                     case 2:
+                        atkKJ02.setBackgroundDrawable(drawable);
                         atkKJ02.setVisibility(View.VISIBLE);
                         break;
                     case 12:
+                        atkKJ12.setBackgroundDrawable(drawable);
                         atkKJ12.setVisibility(View.VISIBLE);
                         break;
                     case 22:
+                        atkKJ22.setBackgroundDrawable(drawable);
                         atkKJ22.setVisibility(View.VISIBLE);
                         break;
                     case 32:
+                        atkKJ32.setBackgroundDrawable(drawable);
                         atkKJ32.setVisibility(View.VISIBLE);
                         break;
                     case 42:
+                        atkKJ42.setBackgroundDrawable(drawable);
                         atkKJ42.setVisibility(View.VISIBLE);
                         break;
                 }
@@ -358,11 +410,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void atkJudgmentSelf(int atkKindNum) {
+        /**
+         * 1.扣魔力
+         * 2.自己是否攻擊成功
+         * 3.
+         * */
         atkJudgmentCommon(atkKindNum);
+
         int[] XY = {locationXCom, locationYCom};
         boolean success = false;
         showLog("敵人所在位置" + XY[0] + " " + XY[1]);
-        for (int[] el : getAtkRange("自己", atkKindNum)) {
+        for (int[] el : getAtkRange("自己", atkKindNum)) { // 獲取攻擊範圍時順便畫畫
             showLog("攻擊成功的位置 : " + el[0] + " " + el[1]);
             if (XY[0] == el[0] && XY[1] == el[1]) {
                 success = true;
@@ -373,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
             int hp = Integer.parseInt(txt_com_hp.getText().toString()) - getAtkHP(atkKindNum);
             txt_com_hp.setText(String.valueOf(hp));
         }
+        rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
 
     public void atkJudgmentCom(int atkKindNum) {
@@ -390,14 +449,17 @@ public class MainActivity extends AppCompatActivity {
         if (success) {
             int hp = Integer.parseInt(txt_self_hp.getText().toString()) - getAtkHP(atkKindNum);
             txt_self_hp.setText(String.valueOf(hp));
+            Toast.makeText(this, "成功攻擊!! 扣對方" + getAtkHP(atkKindNum) + " HP ", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "成功失敗.. 消耗" + getAtkMP(atkKindNum) + " MP ", Toast.LENGTH_LONG).show();
         }
+
+
+        rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
 
     public void initConnect(View view) {
         connectManager.initiateSocketConnection();
-        txt_self.setText("");
-        txtCom.setText("");
-        txtWinLose.setText("");
         Toast.makeText(this, "重新連線", Toast.LENGTH_SHORT).show();
     }
 
@@ -434,7 +496,15 @@ public class MainActivity extends AppCompatActivity {
         /**重新繪製位置*/
         showLog("移動的座標x : ", x + "");
         showLog("移動的座標y : ", y + "");
+        locationXSelf = x;
+        locationYSelf = y;
         imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
+    }
+
+    public void confirmPlace() {
+        /**重新繪製位置*/
+        imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
+        imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
 
     public void showLog(String... x) {
