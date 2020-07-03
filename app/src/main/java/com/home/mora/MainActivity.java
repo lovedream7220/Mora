@@ -251,9 +251,9 @@ public class MainActivity extends AppCompatActivity {
     public int[][] atkRangeCom;
     public int[][] atkRangeDD;
 
-    public void initAtkRange(){
+    public void initAtkRange() {
         atkRangeO = null;
-        atkRangeSelf = null ;
+        atkRangeSelf = null;
         atkRangeCom = null;
         atkRangeDD = null;
     }
@@ -284,6 +284,8 @@ public class MainActivity extends AppCompatActivity {
         }
         atkJudgmentCommonRange(who, atkRangeX);
         return atkRangeX;
+//        int[][] x =  {{1,1}};
+//        return x ;
     }
 
     public int getAtkHP(int atkKindNum) {
@@ -416,7 +418,6 @@ public class MainActivity extends AppCompatActivity {
          * 3.
          * */
         atkJudgmentCommon(atkKindNum);
-
         int[] XY = {locationXCom, locationYCom};
         boolean success = false;
         showLog("敵人所在位置" + XY[0] + " " + XY[1]);
@@ -430,6 +431,9 @@ public class MainActivity extends AppCompatActivity {
         if (success) {
             int hp = Integer.parseInt(txt_com_hp.getText().toString()) - getAtkHP(atkKindNum);
             txt_com_hp.setText(String.valueOf(hp));
+            Toast.makeText(this, "攻擊成功!! 扣對方 " + getAtkHP(atkKindNum) + " HP ", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "攻擊失敗.. 消耗 " + getAtkMP(atkKindNum) + " MP ", Toast.LENGTH_LONG).show();
         }
         rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
@@ -438,9 +442,7 @@ public class MainActivity extends AppCompatActivity {
         atkJudgmentCommon(atkKindNum);
         int[] XY = {locationXSelf, locationYSelf};
         boolean success = false;
-//        showLog("敵人所在位置" + XY[0] + " " + XY[1]);
         for (int[] el : getAtkRange("敵人", atkKindNum)) {
-//            showLog("攻擊成功的位置 : " + el[0] + " " + el[1]);
             if (XY[0] == el[0] && XY[1] == el[1]) {
                 success = true;
             }
@@ -449,12 +451,7 @@ public class MainActivity extends AppCompatActivity {
         if (success) {
             int hp = Integer.parseInt(txt_self_hp.getText().toString()) - getAtkHP(atkKindNum);
             txt_self_hp.setText(String.valueOf(hp));
-            Toast.makeText(this, "成功攻擊!! 扣對方" + getAtkHP(atkKindNum) + " HP ", Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(this, "成功失敗.. 消耗" + getAtkMP(atkKindNum) + " MP ", Toast.LENGTH_LONG).show();
         }
-
-
         rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
 
@@ -489,6 +486,7 @@ public class MainActivity extends AppCompatActivity {
         }
         locationXCom = x;
         locationYCom = y;
+        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
         imageCom.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
@@ -498,11 +496,15 @@ public class MainActivity extends AppCompatActivity {
         showLog("移動的座標y : ", y + "");
         locationXSelf = x;
         locationYSelf = y;
+        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
         imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
     public void confirmPlace() {
         /**重新繪製位置*/
+        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
+        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
+
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }

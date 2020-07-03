@@ -137,10 +137,8 @@ public class ConnectManager extends AppCompatActivity {
                         System.out.println("使用第 " + atk + " 招");
                         if (sender.equals(activity.userName)) {
                             activity.atkJudgmentSelf(atk);
-
                         } else {
                             activity.atkJudgmentCom(atk);
-
                         }
                         break;
                 }

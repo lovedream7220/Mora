@@ -32,7 +32,7 @@
 
     <TextView
         android:id="@+id/txt_self_hp"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="10"
@@ -54,7 +54,7 @@
 
     <TextView
         android:id="@+id/txt_self_mp"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="10"
@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/txt_com_hp"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -96,7 +96,7 @@
 
     <TextView
         android:id="@+id/txt_com_mp"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
