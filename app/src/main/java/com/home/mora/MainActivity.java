@@ -39,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imagePlayer, imageCom;
     private EditText roomEditText;
     public int step;
-    //    public String userName;
     WebSocket webSocket;
     ConnectManager connectManager = new ConnectManager(this);
-//    AtkKind atkKind = new AtkKind();
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
      */
@@ -50,22 +48,16 @@ public class MainActivity extends AppCompatActivity {
             "魔術師", "通靈師", "熊", "白癡", "炸彈人", "守墓人", "九尾妖狐"};
     public String userName = text1[(int) (Math.random() * text1.length)] + (int) (Math.random() * 9999 + 1);
 
-//    public enum playerMoraList {
-//        石頭, 剪刀, 布, 還沒出
-//    }
-
-
     public int locationXSelf = 0;
     public int locationYSelf = 1;
-
     public int locationXCom = 4;
     public int locationYCom = 1;
     private View lineX0, lineX1, lineX2, lineX3, lineX4, lineY0, lineY1, lineY2, lineY3, lineY4;
     private View atkKJ00, atkKJ10, atkKJ20, atkKJ30, atkKJ40;
     private View atkKJ01, atkKJ11, atkKJ21, atkKJ31, atkKJ41;
     private View atkKJ02, atkKJ12, atkKJ22, atkKJ32, atkKJ42;
-    //    public View atkKJ;
-    private TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
+    public Button initGame;
+    public TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
     public View[] locationX;
     public View[] locationY;
@@ -81,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         locationY = new View[]{lineY0, lineY1, lineY2};
         roomEditText.setText(userName);
         step = 0;
+
     }
 
 
@@ -127,9 +120,8 @@ public class MainActivity extends AppCompatActivity {
         atkKJ22 = findViewById(R.id.atkKJ22);
         atkKJ32 = findViewById(R.id.atkKJ32);
         atkKJ42 = findViewById(R.id.atkKJ42);
-//        atkKJ =
-//        atkKJ = findViewById(R.id.atkKJ);
-//        atkKJ.setBackgroundColor(Color.RED);
+        initGame = findViewById(R.id.initGame);
+        initGame.setVisibility(View.INVISIBLE);
         visibility();
     }
 
@@ -159,6 +151,13 @@ public class MainActivity extends AppCompatActivity {
         button4.setEnabled(false);
         button5.setEnabled(false);
         button6.setEnabled(false);
+        button.setAlpha(0.2f);
+        button2.setAlpha(0.2f);
+        button3.setAlpha(0.2f);
+        button4.setAlpha(0.2f);
+        button5.setAlpha(0.2f);
+        button6.setAlpha(0.2f);
+
     }
 
     public void openBtn() {
@@ -168,6 +167,12 @@ public class MainActivity extends AppCompatActivity {
         button4.setEnabled(true);
         button5.setEnabled(true);
         button6.setEnabled(true);
+        button.setAlpha(1.0f);
+        button2.setAlpha(1.0f);
+        button3.setAlpha(1.0f);
+        button4.setAlpha(1.0f);
+        button5.setAlpha(1.0f);
+        button6.setAlpha(1.0f);
     }
 
 
@@ -299,13 +304,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void atkJudgmentCommon(int atkKindNum) {
-        /**先扣魔力*/
-        int mp = Integer.parseInt(txt_self_mp.getText().toString()) - getAtkMP(atkKindNum);
-        txt_self_mp.setText(String.valueOf(mp));
-    }
-
-
     public void rangeSame() {
         List<Integer> listX = new ArrayList<>();
         List<Integer> listY = new ArrayList<>();
@@ -417,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
          * 2.自己是否攻擊成功
          * 3.
          * */
-        atkJudgmentCommon(atkKindNum);
+        addMP(txt_self_mp, -getAtkMP(atkKindNum));//1.扣自己魔力
         int[] XY = {locationXCom, locationYCom};
         boolean success = false;
         showLog("敵人所在位置" + XY[0] + " " + XY[1]);
@@ -429,8 +427,7 @@ public class MainActivity extends AppCompatActivity {
         }
         showLog("自己是否攻擊成功 : " + success + "");
         if (success) {
-            int hp = Integer.parseInt(txt_com_hp.getText().toString()) - getAtkHP(atkKindNum);
-            txt_com_hp.setText(String.valueOf(hp));
+            addMP(txt_com_hp, -getAtkHP(atkKindNum));//1.扣敵人血量
             Toast.makeText(this, "攻擊成功!! 扣對方 " + getAtkHP(atkKindNum) + " HP ", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "攻擊失敗.. 消耗 " + getAtkMP(atkKindNum) + " MP ", Toast.LENGTH_LONG).show();
@@ -439,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void atkJudgmentCom(int atkKindNum) {
-        atkJudgmentCommon(atkKindNum);
+        addMP(txt_com_mp, -getAtkMP(atkKindNum));//1.扣敵人魔力
         int[] XY = {locationXSelf, locationYSelf};
         boolean success = false;
         for (int[] el : getAtkRange("敵人", atkKindNum)) {
@@ -449,8 +446,7 @@ public class MainActivity extends AppCompatActivity {
         }
         showLog("敵人是否攻擊成功 : ", success + "");
         if (success) {
-            int hp = Integer.parseInt(txt_self_hp.getText().toString()) - getAtkHP(atkKindNum);
-            txt_self_hp.setText(String.valueOf(hp));
+            addMP(txt_self_hp, -getAtkHP(atkKindNum));//1.扣自己血量
         }
         rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
@@ -486,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
         }
         locationXCom = x;
         locationYCom = y;
-        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
+//        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
         imageCom.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
@@ -496,14 +492,14 @@ public class MainActivity extends AppCompatActivity {
         showLog("移動的座標y : ", y + "");
         locationXSelf = x;
         locationYSelf = y;
-        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
+//        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
         imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
     }
 
     public void confirmPlace() {
         /**重新繪製位置*/
-        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
-        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
+//        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
+//        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
 
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
@@ -511,6 +507,60 @@ public class MainActivity extends AppCompatActivity {
 
     public void showLog(String... x) {
 //        System.out.println(x);
+    }
+
+    public void addMP(TextView PP, int add) {
+        int MpBefore = Integer.parseInt(PP.getText().toString());
+        System.out.println("現存 : " + MpBefore + " + " + add);
+        int MpAfter = MpBefore + add;
+        PP.setText(MpAfter + "");
+        if (MpAfter >= 10) {
+            PP.setText(10 + "");
+        }
+        System.out.println("後續 : " + MpAfter);
+    }
+
+    public void MPLimit(int atkKindNum, View buttonX) {
+        if (Integer.parseInt(txt_self_mp.getText().toString()) < getAtkMP(atkKindNum)) {
+            buttonX.setAlpha(0.2f);
+            buttonX.setEnabled(false);
+        }
+    }
+
+    public void init() {
+        openBtn();
+        addMP(txt_self_hp, 1);
+        addMP(txt_com_hp, 1);
+        addMP(txt_self_mp, 2);
+        addMP(txt_com_mp, 2);
+        MPLimit(1, button5);
+        MPLimit(2, button6);
+        gameEnd();
+    }
+
+    public void gameEnd() {
+        if (Integer.parseInt(txt_self_hp.getText().toString()) <= 0 || Integer.parseInt(txt_com_hp.getText().toString()) <= 0) {
+            initGame.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "遊戲結束", Toast.LENGTH_LONG).show();
+        }
+        lockBtn();
+
+    }
+
+    public void initGame(View v) {
+        initGame.setVisibility(View.INVISIBLE);
+        txt_self_hp.setText("10");
+        txt_com_hp.setText("10");
+        txt_self_mp.setText("10");
+        txt_com_mp.setText("10");
+        locationXSelf = 0;
+        locationYSelf = 1;
+        locationXCom = 4;
+        locationYCom = 1;
+        visibility();
+        openBtn();
+        imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
+        imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
 
 }

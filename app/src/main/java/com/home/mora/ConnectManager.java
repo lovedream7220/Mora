@@ -106,7 +106,7 @@ public class ConnectManager extends AppCompatActivity {
      */
     private void receiveMessage(JSONArray jsonArray) {
 //        isReceiving = true;
-        activity.openBtn();
+
         activity.visibility();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -145,6 +145,9 @@ public class ConnectManager extends AppCompatActivity {
             }
             activity.confirmPlace();
             activity.initAtkRange();
+
+            activity.init();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

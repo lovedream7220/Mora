@@ -9,8 +9,8 @@ public class AtkKind {
 
     public static int[][][] atk = new int[][][]{atk0, atk1};
 
-    public static int[] atkHP = new int[]{5, 5};
-    public static int[] atkMP = new int[]{3, 4};
+    public static int[] atkHP = new int[]{5, 6};
+    public static int[] atkMP = new int[]{5, 6};
 
     public static int[][] getAtk(int x) {
         return atk[x];
