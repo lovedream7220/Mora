@@ -143,7 +143,7 @@ public class ConnectManager extends AppCompatActivity {
                         break;
                 }
             }
-            activity.confirmPlace();
+//            activity.confirmPlace();
             activity.init();
 
         } catch (JSONException e) {

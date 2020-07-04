@@ -61,7 +61,7 @@ public class MoveRules {
         }
         activity.locationXCom = x;
         activity.locationYCom = y;
-        activity.imageCom.layout(activity.locationX[x].getLeft() + 30, activity.locationY[y].getTop() - 200, activity.locationX[x].getLeft() + 100 + 30, activity.locationY[y].getBottom());
+        activity.imageCom.layout(activity.locationX[x].getLeft() + 30 + 50 , activity.locationY[y].getTop() - 200, activity.locationX[x].getLeft() + 100 + 30 + 50 , activity.locationY[y].getBottom());
     }
 
     public void moveJudgmentSelf(int x, int y) {

@@ -163,7 +163,6 @@
         android:id="@+id/lineY0"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_above="@+id/twobtn"
         android:background="#000000"
         android:padding="150dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4" />
@@ -172,7 +171,6 @@
         android:id="@+id/lineY1"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_above="@+id/twobtn"
         android:background="#000000"
         android:padding="150dp"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
@@ -182,7 +180,6 @@
         android:id="@+id/lineY2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_above="@+id/twobtn"
         android:background="#000000"
         android:padding="150dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -195,7 +192,6 @@
         android:id="@+id/lineX0"
         android:layout_width="2dp"
         android:layout_height="340dp"
-        android:layout_above="@+id/twobtn"
         android:background="#000000"
         android:padding="150dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -314,7 +310,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/layout_choose"
+        layout="@layout/layout_choose1"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -3,7 +3,10 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
-
+    dataBinding
+            {
+                enabled true
+            }
     defaultConfig {
         applicationId "com.home.mora"
         minSdkVersion 14
