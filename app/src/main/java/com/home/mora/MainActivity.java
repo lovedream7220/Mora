@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 0627 :
      * 1.增加按鈕可以重新連線 initConnect
-     * 2.
+     * 0704 :
+     * 1.分類
      */
     private TextView txt_self_name;
     private Button btnInitStart, btnInitConnect;
@@ -217,8 +218,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void initConnect(View view) {
         connectManager.initiateSocketConnection();
         Toast.makeText(this, "重新連線", Toast.LENGTH_SHORT).show();
@@ -234,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
-
 
 
     /**
