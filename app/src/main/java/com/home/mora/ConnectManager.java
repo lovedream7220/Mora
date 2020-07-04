@@ -28,7 +28,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://d5ccb4eaa732.ngrok.io";
+    private static final String SERVER_PATH = "http://555f9f464827.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -119,9 +119,9 @@ public class ConnectManager extends AppCompatActivity {
                         int y = jsonObject.getInt("y");
                         System.out.println("是不是自己要移動 : " + sender.equals(activity.userName));
                         if (sender.equals(activity.userName)) {
-                            activity.moveJudgmentSelf(x, y);
+                            activity.moveRules.moveJudgmentSelf(x, y);
                         } else {
-                            activity.moveJudgmentCom(x, y);
+                            activity.moveRules.moveJudgmentCom(x, y);
                         }
                         break;
                 }
@@ -136,16 +136,14 @@ public class ConnectManager extends AppCompatActivity {
                         int atk = jsonObject.getInt("atk");
                         System.out.println("使用第 " + atk + " 招");
                         if (sender.equals(activity.userName)) {
-                            activity.atkJudgmentSelf(atk);
+                            activity.atkRules.atkJudgmentSelf(atk);
                         } else {
-                            activity.atkJudgmentCom(atk);
+                            activity.atkRules.atkJudgmentCom(atk);
                         }
                         break;
                 }
             }
             activity.confirmPlace();
-            activity.initAtkRange();
-
             activity.init();
 
         } catch (JSONException e) {

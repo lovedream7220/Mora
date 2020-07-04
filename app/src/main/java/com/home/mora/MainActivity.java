@@ -1,31 +1,18 @@
 package com.home.mora;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelStoreOwner;
 
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import okhttp3.WebSocket;
-
-import static com.home.mora.playerMoraList.*;
 
 public class MainActivity extends AppCompatActivity {
     /**0626讓冠宇看懂的連線版本 */
@@ -34,13 +21,16 @@ public class MainActivity extends AppCompatActivity {
      * 1.增加按鈕可以重新連線 initConnect
      * 2.
      */
-    private TextView txtCom, txtWinLose, txt_self, txtVs, txt_self_name;
+    private TextView txt_self_name;
     private Button btnInitStart, btnInitConnect;
-    private ImageView imagePlayer, imageCom;
+    public ImageView imagePlayer, imageCom;
     private EditText roomEditText;
     public int step;
     WebSocket webSocket;
     ConnectManager connectManager = new ConnectManager(this);
+    public MoveRules moveRules = new MoveRules(this);
+    public AtkRules atkRules = new AtkRules(this);
+
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
      */
@@ -53,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
     public int locationXCom = 4;
     public int locationYCom = 1;
     private View lineX0, lineX1, lineX2, lineX3, lineX4, lineY0, lineY1, lineY2, lineY3, lineY4;
-    private View atkKJ00, atkKJ10, atkKJ20, atkKJ30, atkKJ40;
-    private View atkKJ01, atkKJ11, atkKJ21, atkKJ31, atkKJ41;
-    private View atkKJ02, atkKJ12, atkKJ22, atkKJ32, atkKJ42;
+    public View atkKJ00, atkKJ10, atkKJ20, atkKJ30, atkKJ40;
+    public View atkKJ01, atkKJ11, atkKJ21, atkKJ31, atkKJ41;
+    public View atkKJ02, atkKJ12, atkKJ22, atkKJ32, atkKJ42;
     public Button initGame;
     public TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
@@ -64,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("重新啟動---------");
+        System.out.println("---------重新啟動---------");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectManager.initiateSocketConnection();
@@ -157,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
         button4.setAlpha(0.2f);
         button5.setAlpha(0.2f);
         button6.setAlpha(0.2f);
-
     }
 
     public void openBtn() {
@@ -196,260 +185,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 userName = s.toString();
-                showLog("userName : " + userName);
+                System.out.println("userName : " + userName);
                 /** 將使用者名稱紀錄進手機內存*/
             }
         });
     }
 
-    public void moveCommon(int x, int y, String txt) {
-        /**邊界限制*/
-        if (locationXSelf + x < 0) {
-            locationXSelf = 0;
-        } else if (locationXSelf + x > 4) {
-            locationXSelf = 4;
-        } else {
-            locationXSelf = locationXSelf + x;
-        }
-        if (locationYSelf + y < 0) {
-            locationYSelf = 0;
-        } else if (locationYSelf + y > 2) {
-            locationYSelf = 2;
-        } else {
-            locationYSelf = locationYSelf + y;
-        }
-        lockBtn();
-        connectManager.sendMessage(step(), locationXSelf, locationYSelf, "move");
-        Toast.makeText(this, txt, Toast.LENGTH_SHORT).show();
-    }
 
     public void moveRight(View view) {
-        moveCommon(1, 0, "向右");
+        moveRules.moveCommon(1, 0, "向右");
     }
 
     public void moveLeft(View view) {
-        moveCommon(-1, 0, "向左");
+        moveRules.moveCommon(-1, 0, "向左");
     }
 
     public void moveTop(View view) {
-        moveCommon(0, 1, "向上");
+        moveRules.moveCommon(0, 1, "向上");
     }
 
     public void moveDown(View view) {
-        moveCommon(0, -1, "向下");
-    }
-
-    public void atkCommon(int atk) {
-        connectManager.sendMessage(atk, "atk");
+        moveRules.moveCommon(0, -1, "向下");
     }
 
     public void tool1(View view) {
-        atkCommon(1);
+        sendMessageMoveAtk(1);
     }
 
     public void tool2(View view) {
-        atkCommon(2);
-    }
-
-    public int[][] atkRangeO;
-    public int[][] atkRangeSelf;
-    public int[][] atkRangeCom;
-    public int[][] atkRangeDD;
-
-    public void initAtkRange() {
-        atkRangeO = null;
-        atkRangeSelf = null;
-        atkRangeCom = null;
-        atkRangeDD = null;
-    }
-
-    public int[][] getAtkRange(String who, int atkKindNum) {
-        /**會記錄玩家攻擊的位置方便後續計算*/
-        atkKindNum = atkKindNum - 1;
-        atkRangeO = AtkKind.getAtk(atkKindNum);
-        int[][] atkRangeX = new int[atkRangeO.length][2];
-        if (who.equals("自己")) {
-            for (int i = 0; i < atkRangeO.length; i++) {
-                atkRangeX[i][0] = locationXSelf + atkRangeO[i][0];
-                atkRangeX[i][1] = locationYSelf + atkRangeO[i][1];
-            }
-            atkRangeSelf = new int[atkRangeX.length][];
-            for (int k = 0; k < atkRangeX.length; k++) {
-                atkRangeSelf[k] = atkRangeX[k].clone();
-            }
-        } else if (who.equals("敵人")) {
-            for (int i = 0; i < atkRangeO.length; i++) {
-                atkRangeX[i][0] = locationXCom + atkRangeO[i][0];
-                atkRangeX[i][1] = locationYCom + atkRangeO[i][1];
-            }
-            atkRangeCom = new int[atkRangeX.length][];
-            for (int k = 0; k < atkRangeX.length; k++) {
-                atkRangeCom[k] = atkRangeX[k].clone();
-            }
-        }
-        atkJudgmentCommonRange(who, atkRangeX);
-        return atkRangeX;
-//        int[][] x =  {{1,1}};
-//        return x ;
-    }
-
-    public int getAtkHP(int atkKindNum) {
-        atkKindNum = atkKindNum - 1;
-        return AtkKind.getAtkHP(atkKindNum);
-    }
-
-    public int getAtkMP(int atkKindNum) {
-        atkKindNum = atkKindNum - 1;
-        return AtkKind.getAtkMP(atkKindNum);
+        sendMessageMoveAtk(2);
     }
 
 
-    public void rangeSame() {
-        List<Integer> listX = new ArrayList<>();
-        List<Integer> listY = new ArrayList<>();
-        if ((atkRangeCom != null) && (atkRangeSelf != null)) {
-            for (int i = 0; i < atkRangeCom.length; i++) {
-                for (int j = 0; j < atkRangeSelf.length; j++) {
-                    if (atkRangeCom[i][0] * 10 + atkRangeCom[i][1] == atkRangeSelf[j][0] * 10 + atkRangeSelf[j][1]) {
-                        listX.add(atkRangeCom[i][0]);
-                        listY.add(atkRangeCom[i][1]);
-                    }
-                }
-            }
 
-            atkRangeDD = new int[listX.size()][2];
-            for (int i = 0; i < listX.size(); i++) {
-                atkRangeDD[i][0] = listX.get(i);
-                atkRangeDD[i][1] = listY.get(i);
-            }
-
-            if (atkRangeDD != null) {
-                atkJudgmentCommonRange("同個位置", atkRangeDD);
-            }
-        }
-    }
-
-    public void atkJudgmentCommonRange(String x, int[][] range) {
-        Resources res = getResources();
-        Drawable drawable;
-        drawable = res.getDrawable(R.drawable.atk);
-        if (x.equals("敵人")) {
-            drawable = res.getDrawable(R.drawable.atkc);
-        }
-        if (x.equals("同個位置")) {
-            drawable = res.getDrawable(R.drawable.atkt);
-        }
-        for (int i = 0; i < range.length; i++) {
-            if (range[i][0] >= 0 && range[i][1] >= 0 && range[i][0] < 5 && range[i][1] < 3) {
-                System.out.println("燃燒的地方 : " + range[i][0] + "," + range[i][1]);
-                switch (range[i][0] * 10 + range[i][1]) {
-                    case 0:
-                        atkKJ00.setBackgroundDrawable(drawable);
-                        atkKJ00.setVisibility(View.VISIBLE);
-                        break;
-                    case 10:
-                        atkKJ10.setBackgroundDrawable(drawable);
-                        atkKJ10.setVisibility(View.VISIBLE);
-                        break;
-                    case 20:
-                        atkKJ20.setBackgroundDrawable(drawable);
-                        atkKJ20.setVisibility(View.VISIBLE);
-                        break;
-                    case 30:
-                        atkKJ30.setBackgroundDrawable(drawable);
-                        atkKJ30.setVisibility(View.VISIBLE);
-                        break;
-                    case 40:
-                        atkKJ40.setBackgroundDrawable(drawable);
-                        atkKJ40.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        atkKJ01.setBackgroundDrawable(drawable);
-                        atkKJ01.setVisibility(View.VISIBLE);
-                        break;
-                    case 11:
-                        atkKJ11.setBackgroundDrawable(drawable);
-                        atkKJ11.setVisibility(View.VISIBLE);
-                        break;
-                    case 21:
-                        atkKJ21.setBackgroundDrawable(drawable);
-                        atkKJ21.setVisibility(View.VISIBLE);
-                        break;
-                    case 31:
-                        atkKJ31.setBackgroundDrawable(drawable);
-                        atkKJ31.setVisibility(View.VISIBLE);
-                        break;
-                    case 41:
-                        atkKJ41.setBackgroundDrawable(drawable);
-                        atkKJ41.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        atkKJ02.setBackgroundDrawable(drawable);
-                        atkKJ02.setVisibility(View.VISIBLE);
-                        break;
-                    case 12:
-                        atkKJ12.setBackgroundDrawable(drawable);
-                        atkKJ12.setVisibility(View.VISIBLE);
-                        break;
-                    case 22:
-                        atkKJ22.setBackgroundDrawable(drawable);
-                        atkKJ22.setVisibility(View.VISIBLE);
-                        break;
-                    case 32:
-                        atkKJ32.setBackgroundDrawable(drawable);
-                        atkKJ32.setVisibility(View.VISIBLE);
-                        break;
-                    case 42:
-                        atkKJ42.setBackgroundDrawable(drawable);
-                        atkKJ42.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        }
-    }
-
-
-    public void atkJudgmentSelf(int atkKindNum) {
-        /**
-         * 1.扣魔力
-         * 2.自己是否攻擊成功
-         * 3.
-         * */
-        addMP(txt_self_mp, -getAtkMP(atkKindNum));//1.扣自己魔力
-        int[] XY = {locationXCom, locationYCom};
-        boolean success = false;
-        showLog("敵人所在位置" + XY[0] + " " + XY[1]);
-        for (int[] el : getAtkRange("自己", atkKindNum)) { // 獲取攻擊範圍時順便畫畫
-            showLog("攻擊成功的位置 : " + el[0] + " " + el[1]);
-            if (XY[0] == el[0] && XY[1] == el[1]) {
-                success = true;
-            }
-        }
-        showLog("自己是否攻擊成功 : " + success + "");
-        if (success) {
-            addMP(txt_com_hp, -getAtkHP(atkKindNum));//1.扣敵人血量
-            Toast.makeText(this, "攻擊成功!! 扣對方 " + getAtkHP(atkKindNum) + " HP ", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "攻擊失敗.. 消耗 " + getAtkMP(atkKindNum) + " MP ", Toast.LENGTH_LONG).show();
-        }
-        rangeSame();//如果攻擊位置重疊 變成其他圖片
-    }
-
-    public void atkJudgmentCom(int atkKindNum) {
-        addMP(txt_com_mp, -getAtkMP(atkKindNum));//1.扣敵人魔力
-        int[] XY = {locationXSelf, locationYSelf};
-        boolean success = false;
-        for (int[] el : getAtkRange("敵人", atkKindNum)) {
-            if (XY[0] == el[0] && XY[1] == el[1]) {
-                success = true;
-            }
-        }
-        showLog("敵人是否攻擊成功 : ", success + "");
-        if (success) {
-            addMP(txt_self_hp, -getAtkHP(atkKindNum));//1.扣自己血量
-        }
-        rangeSame();//如果攻擊位置重疊 變成其他圖片
-    }
 
     public void initConnect(View view) {
         connectManager.initiateSocketConnection();
@@ -461,92 +229,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void moveJudgmentCom(int x, int y) {
-        /**重新繪製位置*/
-        switch (x) {
-            case 4:
-                x = 0;
-                break;
-            case 3:
-                x = 1;
-                break;
-            case 2:
-                x = 2;
-                break;
-            case 1:
-                x = 3;
-                break;
-            case 0:
-                x = 4;
-                break;
-        }
-        locationXCom = x;
-        locationYCom = y;
-//        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
-        imageCom.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
-    }
-
-    public void moveJudgmentSelf(int x, int y) {
-        /**重新繪製位置*/
-        showLog("移動的座標x : ", x + "");
-        showLog("移動的座標y : ", y + "");
-        locationXSelf = x;
-        locationYSelf = y;
-//        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
-        imagePlayer.layout(locationX[x].getLeft() + 30, locationY[y].getTop() - 200, locationX[x].getLeft() + 100 + 30, locationY[y].getBottom());
-    }
-
     public void confirmPlace() {
         /**重新繪製位置*/
-//        System.out.println("重繪位置s : " + locationXSelf + "," + locationYSelf);
-//        System.out.println("重繪位置c : " + locationYCom + "," + locationXCom);
-
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
 
-    public void showLog(String... x) {
-//        System.out.println(x);
+
+
+    /**
+     * 每次移動之後的初始化
+     * 1.增加雙發完家的MP以及HP
+     * 2.判斷攻擊技能是否可以使用
+     * 3.判斷遊戲是否結束
+     * 4.把攻擊範圍初始化
+     */
+    public void init() {
+        openBtn();
+        controlMPHP(txt_self_hp, 1);
+        controlMPHP(txt_com_hp, 1);
+        controlMPHP(txt_self_mp, 2);
+        controlMPHP(txt_com_mp, 2);
+        atkRules.MPLimit(1, button5);
+        atkRules.MPLimit(2, button6);
+        gameEnd();
+        atkRules.initAtkRange();
     }
 
-    public void addMP(TextView PP, int add) {
+
+    public void controlMPHP(TextView PP, int add) {
         int MpBefore = Integer.parseInt(PP.getText().toString());
-        System.out.println("現存 : " + MpBefore + " + " + add);
         int MpAfter = MpBefore + add;
         PP.setText(MpAfter + "");
         if (MpAfter >= 10) {
             PP.setText(10 + "");
         }
-        System.out.println("後續 : " + MpAfter);
-    }
-
-    public void MPLimit(int atkKindNum, View buttonX) {
-        if (Integer.parseInt(txt_self_mp.getText().toString()) < getAtkMP(atkKindNum)) {
-            buttonX.setAlpha(0.2f);
-            buttonX.setEnabled(false);
-        }
-    }
-
-    public void init() {
-        openBtn();
-        addMP(txt_self_hp, 1);
-        addMP(txt_com_hp, 1);
-        addMP(txt_self_mp, 2);
-        addMP(txt_com_mp, 2);
-        MPLimit(1, button5);
-        MPLimit(2, button6);
-        gameEnd();
     }
 
     public void gameEnd() {
         if (Integer.parseInt(txt_self_hp.getText().toString()) <= 0 || Integer.parseInt(txt_com_hp.getText().toString()) <= 0) {
             initGame.setVisibility(View.VISIBLE);
             Toast.makeText(this, "遊戲結束", Toast.LENGTH_LONG).show();
+            lockBtn();
         }
-        lockBtn();
-
     }
 
+    /**
+     * 重新開始 初始化遊戲
+     */
     public void initGame(View v) {
         initGame.setVisibility(View.INVISIBLE);
         txt_self_hp.setText("10");
@@ -561,6 +291,19 @@ public class MainActivity extends AppCompatActivity {
         openBtn();
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
+    }
+
+
+    public void sendMessageMove() {
+        lockBtn();
+        Toast.makeText(this, "移動", Toast.LENGTH_SHORT).show();
+        connectManager.sendMessage(0, locationXSelf, locationYSelf, "move");
+    }
+
+    public void sendMessageMoveAtk(int atk) {
+        lockBtn();
+        Toast.makeText(this, "攻擊", Toast.LENGTH_SHORT).show();
+        connectManager.sendMessage(atk, "atk");
     }
 
 }
