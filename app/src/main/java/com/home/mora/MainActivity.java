@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     ConnectManager connectManager = new ConnectManager(this);
     public MoveRules moveRules = new MoveRules(this);
     public AtkRules atkRules = new AtkRules(this);
+    public UpRules upRules = new UpRules(this);
+
 
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         atkKJ42 = findViewById(R.id.atkKJ42);
         initGame = findViewById(R.id.initGame);
         initGame.setVisibility(View.INVISIBLE);
-        visibility();
+        visibility();//創建遊戲
     }
 
 
@@ -211,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tool1(View view) {
+        System.out.println(view.getBackground());
+        System.out.println(R.drawable.hpup);
         sendMessageMoveAtk(1);
     }
 
@@ -218,6 +222,14 @@ public class MainActivity extends AppCompatActivity {
         sendMessageMoveAtk(2);
     }
 
+    public void controlMPHP(TextView PP, int add) {
+        int MpBefore = Integer.parseInt(PP.getText().toString());
+        int MpAfter = MpBefore + add;
+        PP.setText(MpAfter + "");
+        if (MpAfter >= 10) {
+            PP.setText(10 + "");
+        }
+    }
 
     public void initConnect(View view) {
         connectManager.initiateSocketConnection();
@@ -225,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initStart(View view) {
-        Toast.makeText(this, "重新開始", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "沒有淦用", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -256,15 +268,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void controlMPHP(TextView PP, int add) {
-        int MpBefore = Integer.parseInt(PP.getText().toString());
-        int MpAfter = MpBefore + add;
-        PP.setText(MpAfter + "");
-        if (MpAfter >= 10) {
-            PP.setText(10 + "");
-        }
-    }
-
     public void gameEnd() {
         if (Integer.parseInt(txt_self_hp.getText().toString()) <= 0 || Integer.parseInt(txt_com_hp.getText().toString()) <= 0) {
             initGame.setVisibility(View.VISIBLE);
@@ -286,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         locationYSelf = 1;
         locationXCom = 4;
         locationYCom = 1;
-        visibility();
+        visibility();//重開新局
         openBtn();
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
@@ -294,13 +297,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void sendMessageMove() {
-        lockBtn();
+//        lockBtn();
         Toast.makeText(this, "移動", Toast.LENGTH_SHORT).show();
         connectManager.sendMessage(0, locationXSelf, locationYSelf, "move");
     }
 
+    public void sendMessageUp(String pp, int l) {
+//        lockBtn();
+        Toast.makeText(this, "回復", Toast.LENGTH_SHORT).show();
+        connectManager.sendMessage(l, "hp", "up");
+    }
+
     public void sendMessageMoveAtk(int atk) {
-        lockBtn();
+//        lockBtn();
         Toast.makeText(this, "攻擊", Toast.LENGTH_SHORT).show();
         connectManager.sendMessage(atk, "atk");
     }

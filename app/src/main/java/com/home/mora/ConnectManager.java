@@ -1,6 +1,10 @@
 package com.home.mora;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -8,12 +12,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,7 +35,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://555f9f464827.ngrok.io";
+    private static final String SERVER_PATH = "http://37a9bca594f8.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -41,6 +48,9 @@ public class ConnectManager extends AppCompatActivity {
     public ConnectManager(Context context) {
         this.context = context;
         activity = (MainActivity) context;
+    }
+
+    public ConnectManager() {
     }
 
     public void initiateSocketConnection() {
@@ -99,6 +109,7 @@ public class ConnectManager extends AppCompatActivity {
         }
     }
 
+
     /**
      * bind with GameActivity
      *
@@ -106,15 +117,83 @@ public class ConnectManager extends AppCompatActivity {
      */
     private void receiveMessage(JSONArray jsonArray) {
 //        isReceiving = true;
+        activity.visibility();//收到
+        int totalTime = 4;
 
-        activity.visibility();
+//        new Handler().postDelayed(() -> {
+//            rm(0, 1, jsonArray);
+//        }, 1500);
+//        new Handler().postDelayed(() -> {
+//            rm(1, 2, jsonArray);
+//        }, 3000);
+//        new Handler().postDelayed(() -> {
+//            rm(2, 3, jsonArray);
+//        }, 4500);
+//        new Handler().postDelayed(() -> {
+//            rm(3, 4, jsonArray);
+//        }, 6000);
+
+//        new CountDownTimer(totalTime * 1000, 1000) {
+//            public void onTick(long millisUntilFinished) {
+//                int second = Math.round(millisUntilFinished / 1000);
+//                    int startTime = totalTime - second;
+//                    rm(startTime, startTime + 1, jsonArray);
+//                    System.out.println("倒數計時 : " + Math.round(millisUntilFinished / 1000));
+//            }
+//            public void onFinish() {
+//            }
+//        }.start();
+
+
+
+
+        for (int i = 0; i < 4; i++) {
+            Message msg = new Message();
+            Bundle bundle = new Bundle();
+            bundle.putString("JSON_STRING", jsonArray.toString());
+            bundle.putInt("NUM", i);
+            System.out.println("i : " + i);
+            msg.setData(bundle);
+            msg.what = JSON_STRING;
+            handler.sendMessageDelayed(msg, 1000 * (i + 1));
+        }
+    }
+
+    private static final int JSON_STRING = 1;
+    private MyHandler handler = new MyHandler();
+
+
+    class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case JSON_STRING:
+                    String x = msg.getData().getString("JSON_STRING");
+                    int start = msg.getData().getInt("NUM");
+                    JSONArray jsonArray = null;
+                    try {
+                        jsonArray = new JSONArray(x);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    rm(start, start + 1, jsonArray);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    public void rm(int start, int end, JSONArray jsonArray) {
         try {
-            for (int i = 0; i < jsonArray.length(); i++) {
+            for (int i = start; i < end; i++) {
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 String sender = jsonObject.getString("USER");//被操作人是誰
+                System.out.println("執行 : " + i);
                 switch (jsonObject.getString("kind")) {
                     case "move":
-                        System.out.println("執行 : " + i);
                         int x = jsonObject.getInt("x");
                         int y = jsonObject.getInt("y");
                         System.out.println("是不是自己要移動 : " + sender.equals(activity.userName));
@@ -124,9 +203,19 @@ public class ConnectManager extends AppCompatActivity {
                             activity.moveRules.moveJudgmentCom(x, y);
                         }
                         break;
+                    case "up":
+                        int l = jsonObject.getInt("l");
+                        String pp = jsonObject.getString("pp");
+                        System.out.println("是不是自己要回復 " + pp + " : " + sender.equals(activity.userName));
+                        if (sender.equals(activity.userName)) {
+                            activity.upRules.upJudgmentSelf(l, pp);
+                        } else {
+                            activity.upRules.upJudgmentCom(l, pp);
+                        }
+                        break;
                 }
             }
-            for (int i = 0; i < jsonArray.length(); i++) {
+            for (int i = start; i < end; i++) {
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 String sender = jsonObject.getString("USER");//被操作人是誰
                 switch (jsonObject.getString("kind")) {
@@ -143,7 +232,6 @@ public class ConnectManager extends AppCompatActivity {
                         break;
                 }
             }
-//            activity.confirmPlace();
             activity.init();
 
         } catch (JSONException e) {
@@ -178,7 +266,6 @@ public class ConnectManager extends AppCompatActivity {
         }
     }
 
-
     public void sendMessage(int step, int x, int y, String kind) {
 //        if (!isReceiving) {
         JSONObject jsonObject = new JSONObject();
@@ -197,6 +284,24 @@ public class ConnectManager extends AppCompatActivity {
             e.printStackTrace();
         }
 //        }
+    }
+
+
+    public void sendMessage(int l, String pp, String kind) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("kind", kind);
+            jsonObject.put("USER", activity.userName);
+            switch (kind) {
+                case "up":
+                    jsonObject.put("l", l);
+                    jsonObject.put("pp", pp);
+                    webSocket.send(jsonObject.toString());
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
