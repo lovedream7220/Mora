@@ -22,6 +22,7 @@ public class AtkRules {
     public int[][] atkRangeSelf; // 自己的攻擊範圍(根據座標重繪後的)
     public int[][] atkRangeCom; //對手的攻擊範圍(根據座標重繪後的)
     public int[][] atkRangeDD; //重疊的範圍(根據座標重繪後的)
+    public AtkDecide atkDecide = new AtkDecide();
 
     /**
      * 攻擊範圍(根據座標重繪後)
@@ -229,5 +230,146 @@ public class AtkRules {
         atkRangeSelf = null;
         atkRangeCom = null;
         atkRangeDD = null;
+    }
+
+    public void atkDrawHPMP(){
+        activity.HP1.setText(atkDecide.HP[0]+"");
+        activity.HP2.setText(atkDecide.HP[1]+"");
+        activity.HP3.setText(atkDecide.HP[2]+"");
+        activity.HP4.setText(atkDecide.HP[3]+"");
+        activity.MP1.setText(atkDecide.MP[0]+"");
+        activity.MP2.setText(atkDecide.MP[1]+"");
+        activity.MP3.setText(atkDecide.MP[2]+"");
+        activity.MP3.setText(atkDecide.MP[3]+"");
+
+    }
+
+    public void atkDraw() {
+        for (int i = 0; i < atkDecide.atk0[0].length; i++) {
+            switch (atkDecide.atk0[0][i]) {
+                case 1:
+                    activity.line11.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    activity.line12.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    activity.line13.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    activity.line14.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    activity.line15.setVisibility(View.VISIBLE);
+                    break;
+                case 6:
+                    activity.line16.setVisibility(View.VISIBLE);
+                    break;
+                case 7:
+                    activity.line17.setVisibility(View.VISIBLE);
+                    break;
+                case 8:
+                    activity.line18.setVisibility(View.VISIBLE);
+                    break;
+                case 9:
+                    activity.line19.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+
+        for (int i = 0; i < atkDecide.atk0[1].length; i++) {
+            switch (atkDecide.atk0[1][i]) {
+                case 1:
+                    activity.line21.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    activity.line22.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    activity.line23.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    activity.line24.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    activity.line25.setVisibility(View.VISIBLE);
+                    break;
+                case 6:
+                    activity.line26.setVisibility(View.VISIBLE);
+                    break;
+                case 7:
+                    activity.line27.setVisibility(View.VISIBLE);
+                    break;
+                case 8:
+                    activity.line28.setVisibility(View.VISIBLE);
+                    break;
+                case 9:
+                    activity.line29.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+        for (int i = 0; i < atkDecide.atk0[2].length; i++) {
+            switch (atkDecide.atk0[2][i]) {
+                case 1:
+                    activity.line31.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    activity.line32.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    activity.line33.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    activity.line34.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    activity.line35.setVisibility(View.VISIBLE);
+                    break;
+                case 6:
+                    activity.line36.setVisibility(View.VISIBLE);
+                    break;
+                case 7:
+                    activity.line37.setVisibility(View.VISIBLE);
+                    break;
+                case 8:
+                    activity.line38.setVisibility(View.VISIBLE);
+                    break;
+                case 9:
+                    activity.line39.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+        for (int i = 0; i < atkDecide.atk0[3].length; i++) {
+            switch (atkDecide.atk0[3][i]) {
+                case 1:
+                    activity.line41.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    activity.line42.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    activity.line43.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    activity.line44.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    activity.line45.setVisibility(View.VISIBLE);
+                    break;
+                case 6:
+                    activity.line46.setVisibility(View.VISIBLE);
+                    break;
+                case 7:
+                    activity.line47.setVisibility(View.VISIBLE);
+                    break;
+                case 8:
+                    activity.line48.setVisibility(View.VISIBLE);
+                    break;
+                case 9:
+                    activity.line49.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+
     }
 }

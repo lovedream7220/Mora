@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     public Button initGame;
     public TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
+    public View buttonAtk1, buttonAtk2, buttonAtk3, buttonAtk4, buttonAtk5, buttonAtk6;
+
+
     public View[] locationX;
     public View[] locationY;
     public View includeAtk, includeMove;
@@ -64,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
     public View line41, line42, line43, line44, line45, line46, line47, line48, line49;
     public View line51, line52, line53, line54, line55, line56, line57, line58, line59;
     public View line61, line62, line63, line64, line65, line66, line67, line68, line69;
+    public TextView HP1, HP2, HP3, HP4, HP5, HP6;
+    public TextView MP1, MP2, MP3, MP4, MP5, MP6;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("---------重新啟動---------");
@@ -75,11 +82,14 @@ public class MainActivity extends AppCompatActivity {
         locationY = new View[]{lineY0, lineY1, lineY2};
         roomEditText.setText(userName);
         step = 0;
+        atkRules.atkDraw();
+        atkRules.atkDrawHPMP();
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
 
     private void findView() {
+
         roomEditText = findViewById(R.id.roomEditText);
         btnInitStart = findViewById(R.id.initStart);
         btnInitConnect = findViewById(R.id.initConnect);
@@ -101,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
         button4 = findViewById(R.id.button4);
         button5 = findViewById(R.id.button5);
         button6 = findViewById(R.id.button6);
+        buttonAtk1 = findViewById(R.id.buttonAtk1);
+        buttonAtk2 = findViewById(R.id.buttonAtk2);
+        buttonAtk3 = findViewById(R.id.buttonAtk3);
+        buttonAtk4 = findViewById(R.id.buttonAtk4);
+        buttonAtk5 = findViewById(R.id.buttonAtk5);
+//        buttonAtk6 = findViewById(R.id.buttonAtk6);
+
         txt_self_name = findViewById(R.id.txt_self_name);
         txt_self_name.setText(userName);
         txt_self_hp = findViewById(R.id.txt_self_hp);
@@ -179,24 +196,21 @@ public class MainActivity extends AppCompatActivity {
         line48 = findViewById(R.id.line48);
         line49 = findViewById(R.id.line49);
 
-        line12.setVisibility(View.VISIBLE);
-        line14.setVisibility(View.VISIBLE);
-        line19.setVisibility(View.VISIBLE);
+        HP1 = findViewById(R.id.HP1);
+        HP2 = findViewById(R.id.HP2);
+        HP3 = findViewById(R.id.HP3);
+        HP4 = findViewById(R.id.HP4);
+        HP5 = findViewById(R.id.HP5);
+        HP6 = findViewById(R.id.HP6);
+        MP1 = findViewById(R.id.MP1);
+        MP2 = findViewById(R.id.MP2);
+        MP3 = findViewById(R.id.MP3);
+        MP4 = findViewById(R.id.MP4);
+        MP5 = findViewById(R.id.MP5);
+        MP6 = findViewById(R.id.MP6);
 
-        line24.setVisibility(View.VISIBLE);
-        line25.setVisibility(View.VISIBLE);
-        line26.setVisibility(View.VISIBLE);
-
-        line31.setVisibility(View.VISIBLE);
-        line32.setVisibility(View.VISIBLE);
-        line35.setVisibility(View.VISIBLE);
-
-        line41.setVisibility(View.VISIBLE);
-        line43.setVisibility(View.VISIBLE);
-        line45.setVisibility(View.VISIBLE);
-        line47.setVisibility(View.VISIBLE);
-        line49.setVisibility(View.VISIBLE);
     }
+
 
     public void includeMoveInvisible() {
         includeMove.setVisibility(View.INVISIBLE);
@@ -250,6 +264,21 @@ public class MainActivity extends AppCompatActivity {
         button4.setAlpha(0.2f);
         button5.setAlpha(0.2f);
         button6.setAlpha(0.2f);
+    }
+
+    public void lockBtnAtk() {
+        buttonAtk1.setEnabled(false);
+        buttonAtk2.setEnabled(false);
+        buttonAtk3.setEnabled(false);
+        buttonAtk4.setEnabled(false);
+        buttonAtk5.setEnabled(false);
+        buttonAtk6.setEnabled(false);
+        buttonAtk1.setAlpha(0.2f);
+        buttonAtk2.setAlpha(0.2f);
+        buttonAtk3.setAlpha(0.2f);
+        buttonAtk4.setAlpha(0.2f);
+        buttonAtk5.setAlpha(0.2f);
+        buttonAtk6.setAlpha(0.2f);
     }
 
     public void openBtn() {
@@ -422,19 +451,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void atk1(View v){
+    public void atk1(View v) {
+        lockBtnAtk();
         sendMessageMoveAtk(1);
     }
-    public void atk2(View v){
+
+    public void atk2(View v) {
+        lockBtnAtk();
         sendMessageMoveAtk(1);
     }
-    public void atk3(View v){
+
+    public void atk3(View v) {
+        lockBtnAtk();
         sendMessageMoveAtk(1);
     }
-    public void atk4(View v){
+
+    public void atk4(View v) {
+        lockBtnAtk();
         sendMessageMoveAtk(1);
     }
-    public void atk5(View v){
+
+    public void atk5(View v) {
+        lockBtnAtk();
         sendMessageMoveAtk(1);
     }
 
