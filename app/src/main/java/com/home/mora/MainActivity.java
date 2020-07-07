@@ -1,7 +1,9 @@
 package com.home.mora;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public View button, button2, button3, button4, button5, button6;
     public View[] locationX;
     public View[] locationY;
+    public View includeAtk, includeMove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +119,19 @@ public class MainActivity extends AppCompatActivity {
         atkKJ42 = findViewById(R.id.atkKJ42);
         initGame = findViewById(R.id.initGame);
         initGame.setVisibility(View.INVISIBLE);
+
         visibility();//創建遊戲
+
+        includeMove = findViewById(R.id.includeMove);
+        includeAtk = findViewById(R.id.includeAtk);
     }
 
+    public void includeMoveInvisible() {
+        includeMove.setVisibility(View.INVISIBLE);
+    }
+    public void includeMoveVisible() {
+        includeMove.setVisibility(View.VISIBLE);
+    }
 
     public void visibility() {
         atkKJ00.setVisibility(View.INVISIBLE);
@@ -136,6 +149,17 @@ public class MainActivity extends AppCompatActivity {
         atkKJ22.setVisibility(View.INVISIBLE);
         atkKJ32.setVisibility(View.INVISIBLE);
         atkKJ42.setVisibility(View.INVISIBLE);
+
+//        lineX0.setVisibility(View.INVISIBLE);
+//        lineX1.setVisibility(View.INVISIBLE);
+//        lineX2.setVisibility(View.INVISIBLE);
+//        lineX3.setVisibility(View.INVISIBLE);
+//        lineX4.setVisibility(View.INVISIBLE);
+        lineY0.setVisibility(View.INVISIBLE);
+//        lineY1.setVisibility(View.INVISIBLE);
+//        lineY2.setVisibility(View.INVISIBLE);
+
+
     }
 
     public void lockBtn() {
@@ -166,6 +190,10 @@ public class MainActivity extends AppCompatActivity {
         button4.setAlpha(1.0f);
         button5.setAlpha(1.0f);
         button6.setAlpha(1.0f);
+    }
+
+    public void setBackground() {
+//        button.setBackground(getResources().getDrawable(R.drawable.hpup));
     }
 
 
@@ -212,9 +240,12 @@ public class MainActivity extends AppCompatActivity {
         moveRules.moveCommon(0, -1, "向下");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void tool1(View view) {
-        System.out.println(view.getBackground());
-        System.out.println(R.drawable.hpup);
+
+//        view.setBackground(getResources().getDrawable(R.drawable.hpup));
+//        System.out.println(view.getBackground());
+//        System.out.println(getResources().getDrawable(R.drawable.hpup));
         sendMessageMoveAtk(1);
     }
 
@@ -249,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * 每次移動之後的初始化
+     *  回合結束觸發
      * 1.增加雙發完家的MP以及HP
      * 2.判斷攻擊技能是否可以使用
      * 3.判斷遊戲是否結束
@@ -257,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void init() {
         openBtn();
+        includeMoveVisible();
         controlMPHP(txt_self_hp, 1);
         controlMPHP(txt_com_hp, 1);
         controlMPHP(txt_self_mp, 2);

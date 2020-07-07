@@ -152,7 +152,7 @@ public class ConnectManager extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("JSON_STRING", jsonArray.toString());
             bundle.putInt("NUM", i);
-            System.out.println("i : " + i);
+//            System.out.println("i : " + i);
             msg.setData(bundle);
             msg.what = JSON_STRING;
             handler.sendMessageDelayed(msg, 1000 * (i + 1));

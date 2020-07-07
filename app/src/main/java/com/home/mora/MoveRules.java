@@ -37,6 +37,7 @@ public class MoveRules {
         }
 
         activity.sendMessageMove();
+        activity.includeMoveInvisible();
     }
 
 

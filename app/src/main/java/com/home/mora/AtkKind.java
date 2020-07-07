@@ -5,6 +5,7 @@ public class AtkKind {
 
     private static int[][] atk0 = {{-1, 0}, {0, 0}, {1, 0}};
     private static int[][] atk1 = {{-1, -1}, {-1, 1}, {0, 0}, {1, 1}, {1, -1}};
+    private static int[][] atk2 = {{-1, -1}, {-1, 1}, {0, 0}, {1, 1}, {1, -1}};
 
 
     public static int[][][] atk = new int[][][]{atk0, atk1};

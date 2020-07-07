@@ -308,20 +308,22 @@
         app:layout_constraintGuide_percent="0.8321168" />
 
     <include
-        android:id="@+id/include"
-        layout="@layout/layout_choose1"
+        android:id="@+id/includeAtk"
+        layout="@layout/layout_choose2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/includeMove"
         layout="@layout/layout_choose1"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 
 
 
