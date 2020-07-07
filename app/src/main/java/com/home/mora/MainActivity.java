@@ -421,4 +421,21 @@ public class MainActivity extends AppCompatActivity {
         connectManager.sendMessage(atk, "atk");
     }
 
+
+    public void atk1(View v){
+        sendMessageMoveAtk(1);
+    }
+    public void atk2(View v){
+        sendMessageMoveAtk(1);
+    }
+    public void atk3(View v){
+        sendMessageMoveAtk(1);
+    }
+    public void atk4(View v){
+        sendMessageMoveAtk(1);
+    }
+    public void atk5(View v){
+        sendMessageMoveAtk(1);
+    }
+
 }

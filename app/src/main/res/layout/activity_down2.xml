@@ -20,7 +20,6 @@
                 layout="@layout/layout_button_nine1"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintStart_toEndOf="@+id/button2"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -30,8 +29,8 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -74,8 +73,8 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,8 +116,8 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -160,8 +159,8 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -203,8 +202,8 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -238,10 +237,10 @@
                 layout="@layout/layout_button_nine6"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:gravity="center"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintStart_toEndOf="@+id/button2"
-                app:layout_constraintTop_toTopOf="parent"
-                android:gravity="center"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:layout_width="10dp"

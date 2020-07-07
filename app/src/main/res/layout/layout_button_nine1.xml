@@ -9,6 +9,16 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/buttonAtk1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="atk1"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/line14"
+        app:layout_constraintTop_toTopOf="@+id/line12" />
 
     <View
         android:id="@+id/line11"

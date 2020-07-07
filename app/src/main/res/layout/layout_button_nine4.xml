@@ -10,6 +10,17 @@
     tools:context=".MainActivity">
 
 
+    <Button
+        android:id="@+id/buttonAtk4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="atk4"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/line44"
+        app:layout_constraintTop_toTopOf="@+id/line42" />
+
     <View
         android:id="@+id/line41"
         android:layout_width="0dp"
