@@ -18,7 +18,7 @@
 
             <include
                 android:id="@+id/includeAtk1"
-                layout="@layout/layout_atk_range"
+                layout="@layout/layout_button_nine"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"
@@ -28,7 +28,7 @@
 
             <include
                 android:id="@+id/includeAtk2"
-                layout="@layout/layout_atk_range"
+                layout="@layout/layout_button_nine"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"
@@ -38,7 +38,7 @@
 
             <include
                 android:id="@+id/includeAtk3"
-                layout="@layout/layout_atk_range"
+                layout="@layout/layout_button_nine"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"
@@ -48,7 +48,7 @@
 
             <include
                 android:id="@+id/includeAtk4"
-                layout="@layout/layout_atk_range"
+                layout="@layout/layout_button_nine"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"
@@ -58,7 +58,7 @@
 
             <include
                 android:id="@+id/includeAtk5"
-                layout="@layout/layout_atk_range"
+                layout="@layout/layout_button_nine"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"
@@ -68,7 +68,7 @@
 
             <include
                 android:id="@+id/includeAtk6"
-                layout="@layout/layout_atk_range"
+                layout="@layout/layout_button_nine"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"

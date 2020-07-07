@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/atkKJ00"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -20,7 +20,7 @@
 
     <include
         android:id="@+id/atkKJ10"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -30,7 +30,7 @@
 
     <include
         android:id="@+id/atkKJ20"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -40,7 +40,7 @@
 
     <include
         android:id="@+id/atkKJ30"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -50,7 +50,7 @@
 
     <include
         android:id="@+id/atkKJ40"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
@@ -60,7 +60,7 @@
 
     <include
         android:id="@+id/atkKJ01"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -70,7 +70,7 @@
 
     <include
         android:id="@+id/atkKJ11"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -80,7 +80,7 @@
 
     <include
         android:id="@+id/atkKJ21"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -91,7 +91,7 @@
 
     <include
         android:id="@+id/atkKJ31"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -101,7 +101,7 @@
 
     <include
         android:id="@+id/atkKJ41"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -111,7 +111,7 @@
 
     <include
         android:id="@+id/atkKJ02"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
@@ -121,7 +121,7 @@
 
     <include
         android:id="@+id/atkKJ12"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
@@ -131,7 +131,7 @@
 
     <include
         android:id="@+id/atkKJ22"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
@@ -141,7 +141,7 @@
 
     <include
         android:id="@+id/atkKJ32"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
@@ -151,7 +151,7 @@
 
     <include
         android:id="@+id/atkKJ42"
-        layout="@layout/layout_atk_bk"
+        layout="@layout/layout_atk_fire"
         android:layout_width="110dp"
         android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
@@ -309,7 +309,7 @@
 
     <include
         android:id="@+id/includeAtk"
-        layout="@layout/layout_choose2"
+        layout="@layout/activity_down2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -317,7 +317,7 @@
 
     <include
         android:id="@+id/includeMove"
-        layout="@layout/layout_choose1"
+        layout="@layout/activity_down1"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -329,7 +329,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/layout_hpmp"
+        layout="@layout/activity_up"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         app:layout_constraintTop_toTopOf="parent"
