@@ -58,8 +58,12 @@ public class MainActivity extends AppCompatActivity {
     public View[] locationY;
     public View includeAtk, includeMove;
     public View includeAtk1, includeAtk2, includeAtk3, includeAtk4, includeAtk5, includeAtk6;
-    public View line1;
-
+    public View line11, line12, line13, line14, line15, line16, line17, line18, line19;
+    public View line21, line22, line23, line24, line25, line26, line27, line28, line29;
+    public View line31, line32, line33, line34, line35, line36, line37, line38, line39;
+    public View line41, line42, line43, line44, line45, line46, line47, line48, line49;
+    public View line51, line52, line53, line54, line55, line56, line57, line58, line59;
+    public View line61, line62, line63, line64, line65, line66, line67, line68, line69;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("---------重新啟動---------");
@@ -74,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
-
 
     private void findView() {
         roomEditText = findViewById(R.id.roomEditText);
@@ -128,15 +131,71 @@ public class MainActivity extends AppCompatActivity {
         includeAtk = findViewById(R.id.includeAtk);
         includeAtk.setVisibility(View.INVISIBLE);
 
+
         includeAtk1 = findViewById(R.id.includeAtk1);
         includeAtk2 = findViewById(R.id.includeAtk2);
         includeAtk3 = findViewById(R.id.includeAtk3);
         includeAtk4 = findViewById(R.id.includeAtk4);
         includeAtk5 = findViewById(R.id.includeAtk5);
         includeAtk6 = findViewById(R.id.includeAtk6);
-        line1 = findViewById(R.id.line1);
-        line1.setVisibility(View.INVISIBLE);
 
+        line11 = findViewById(R.id.line11);
+        line12 = findViewById(R.id.line12);
+        line13 = findViewById(R.id.line13);
+        line14 = findViewById(R.id.line14);
+        line15 = findViewById(R.id.line15);
+        line16 = findViewById(R.id.line16);
+        line17 = findViewById(R.id.line17);
+        line18 = findViewById(R.id.line18);
+        line19 = findViewById(R.id.line19);
+
+        line21 = findViewById(R.id.line21);
+        line22 = findViewById(R.id.line22);
+        line23 = findViewById(R.id.line23);
+        line24 = findViewById(R.id.line24);
+        line25 = findViewById(R.id.line25);
+        line26 = findViewById(R.id.line26);
+        line27 = findViewById(R.id.line27);
+        line28 = findViewById(R.id.line28);
+        line29 = findViewById(R.id.line29);
+
+        line31 = findViewById(R.id.line31);
+        line32 = findViewById(R.id.line32);
+        line33 = findViewById(R.id.line33);
+        line34 = findViewById(R.id.line34);
+        line35 = findViewById(R.id.line35);
+        line36 = findViewById(R.id.line36);
+        line37 = findViewById(R.id.line37);
+        line38 = findViewById(R.id.line38);
+        line39 = findViewById(R.id.line39);
+
+        line41 = findViewById(R.id.line41);
+        line42 = findViewById(R.id.line42);
+        line43 = findViewById(R.id.line43);
+        line44 = findViewById(R.id.line44);
+        line45 = findViewById(R.id.line45);
+        line46 = findViewById(R.id.line46);
+        line47 = findViewById(R.id.line47);
+        line48 = findViewById(R.id.line48);
+        line49 = findViewById(R.id.line49);
+
+        line12.setVisibility(View.VISIBLE);
+        line14.setVisibility(View.VISIBLE);
+        line19.setVisibility(View.VISIBLE);
+
+        line24.setVisibility(View.VISIBLE);
+        line25.setVisibility(View.VISIBLE);
+        line26.setVisibility(View.VISIBLE);
+
+        line31.setVisibility(View.VISIBLE);
+        line32.setVisibility(View.VISIBLE);
+        line35.setVisibility(View.VISIBLE);
+
+        line41.setVisibility(View.VISIBLE);
+        line43.setVisibility(View.VISIBLE);
+        line45.setVisibility(View.VISIBLE);
+        line47.setVisibility(View.VISIBLE);
+        line49.setVisibility(View.VISIBLE);
     }
 
     public void includeMoveInvisible() {

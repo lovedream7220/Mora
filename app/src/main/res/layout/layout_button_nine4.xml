@@ -11,37 +11,40 @@
 
 
     <View
-        android:id="@+id/line1"
+        android:id="@+id/line41"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line2"
+        android:id="@+id/line42"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline15"
-        app:layout_constraintStart_toEndOf="@+id/line1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/line41"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line3"
+        android:id="@+id/line43"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/line2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/line42"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line4"
+        android:id="@+id/line44"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
@@ -49,65 +52,71 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/line41"
+        app:layout_constraintVertical_bias="1.0"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line5"
+        android:id="@+id/line45"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintEnd_toEndOf="@+id/line2"
+        app:layout_constraintEnd_toEndOf="@+id/line42"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline14"
-        app:layout_constraintTop_toBottomOf="@+id/line2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/line42"
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line6"
+        android:id="@+id/line46"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/line2"
-        app:layout_constraintTop_toBottomOf="@+id/line3" />
+        app:layout_constraintStart_toEndOf="@+id/line42"
+        app:layout_constraintTop_toBottomOf="@+id/line43"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line7"
+        android:id="@+id/line47"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line4" />
+        app:layout_constraintTop_toBottomOf="@+id/line44"
+        android:visibility="invisible"/>
 
     <View
-        android:id="@+id/line8"
+        android:id="@+id/line48"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/line2"
+        app:layout_constraintEnd_toEndOf="@+id/line42"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/line1"
-        app:layout_constraintTop_toBottomOf="@+id/line5"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toEndOf="@+id/line41"
+        app:layout_constraintTop_toBottomOf="@+id/line45"
+        app:layout_constraintVertical_bias="1.0"
+        android:visibility="invisible"/>
 
 
     <View
-        android:id="@+id/line9"
+        android:id="@+id/line49"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/line3"
+        app:layout_constraintEnd_toEndOf="@+id/line43"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/line2"
+        app:layout_constraintStart_toEndOf="@+id/line42"
         app:layout_constraintTop_toTopOf="@+id/guideline13"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:visibility="invisible"/>
 
     <View
         android:id="@+id/lineY1"
