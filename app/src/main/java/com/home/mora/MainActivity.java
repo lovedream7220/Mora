@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     public View[] locationX;
     public View[] locationY;
     public View includeAtk, includeMove;
+    public View includeAtk1, includeAtk2, includeAtk3, includeAtk4, includeAtk5, includeAtk6;
+    public View line1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,13 +126,27 @@ public class MainActivity extends AppCompatActivity {
 
         includeMove = findViewById(R.id.includeMove);
         includeAtk = findViewById(R.id.includeAtk);
+        includeAtk.setVisibility(View.INVISIBLE);
+
+        includeAtk1 = findViewById(R.id.includeAtk1);
+        includeAtk2 = findViewById(R.id.includeAtk2);
+        includeAtk3 = findViewById(R.id.includeAtk3);
+        includeAtk4 = findViewById(R.id.includeAtk4);
+        includeAtk5 = findViewById(R.id.includeAtk5);
+        includeAtk6 = findViewById(R.id.includeAtk6);
+        line1 = findViewById(R.id.line1);
+        line1.setVisibility(View.INVISIBLE);
+
     }
 
     public void includeMoveInvisible() {
         includeMove.setVisibility(View.INVISIBLE);
+        includeAtk.setVisibility(View.VISIBLE);
     }
+
     public void includeMoveVisible() {
         includeMove.setVisibility(View.VISIBLE);
+        includeAtk.setVisibility(View.INVISIBLE);
     }
 
     public void visibility() {
@@ -280,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     *  回合結束觸發
+     * 回合結束觸發
      * 1.增加雙發完家的MP以及HP
      * 2.判斷攻擊技能是否可以使用
      * 3.判斷遊戲是否結束

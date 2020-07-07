@@ -8,7 +8,7 @@ public class AtkKind {
     private static int[][] atk2 = {{-1, -1}, {-1, 1}, {0, 0}, {1, 1}, {1, -1}};
 
 
-    public static int[][][] atk = new int[][][]{atk0, atk1};
+    public static int[][][] atk = new int[][][]{atk0, atk1, atk2};
 
     public static int[] atkHP = new int[]{5, 6};
     public static int[] atkMP = new int[]{5, 6};
