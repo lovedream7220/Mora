@@ -366,9 +366,6 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void tool1(View view) {
 
-//        view.setBackground(getResources().getDrawable(R.drawable.hpup));
-//        System.out.println(view.getBackground());
-//        System.out.println(getResources().getDrawable(R.drawable.hpup));
 //        sendMessageMoveAtk(1);
     }
 
@@ -411,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void init() {
         openBtn();
+        openBtnAtk();
         includeMoveVisible();
         controlMPHP(txt_self_hp, 1);
         controlMPHP(txt_com_hp, 1);

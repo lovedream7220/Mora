@@ -81,10 +81,7 @@ public class ConnectManager extends AppCompatActivity {
                 try {
                     System.out.println(text);
                     JSONArray jsonArray = new JSONArray("[" + text + "]");
-//                    System.out.println(jsonArray.get(0).getClass());
-//                    JSONObject jsonObject = new JSONObject(text);
-//                    JSONObject jsonObject =
-//                    System.out.println(jsonObject.getString());
+
                     receiveMessage(jsonArray);
 
                 } catch (JSONException e) {
@@ -119,8 +116,7 @@ public class ConnectManager extends AppCompatActivity {
     private void receiveMessage(JSONArray jsonArray) {
 //        isReceiving = true;
         activity.visibility();//收到
-        int totalTime = 4;
-
+//        int totalTime = 4;
 //        new Handler().postDelayed(() -> {
 //            rm(0, 1, jsonArray);
 //        }, 1500);
@@ -146,12 +142,11 @@ public class ConnectManager extends AppCompatActivity {
 //        }.start();
 
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             Message msg = new Message();
             Bundle bundle = new Bundle();
             bundle.putString("JSON_STRING", jsonArray.toString());
             bundle.putInt("NUM", i);
-//            System.out.println("i : " + i);
             msg.setData(bundle);
             msg.what = JSON_STRING;
             handler.sendMessageDelayed(msg, 1000 * (i + 1));
@@ -224,17 +219,17 @@ public class ConnectManager extends AppCompatActivity {
                         String atk = jsonObject.getString("atk");
                         atk = atk.substring(1, atk.length() - 1);
                         atk = atk.replace(" " ,"");
-                        int[] atkx = new int[atk.length()];
                         String c[] = atk.split(",");
+
+                        int[] atkx = new int[c.length];
                         for (int j = 0; j < c.length; j++) {
-                            System.out.println(c[j]);
+                            System.out.print(c[j] + " ");
+                            System.out.println("攻擊位置");
                             atkx[j] = Integer.parseInt(c[j]);
                         }
-                        System.out.println(atk);
-                        System.out.println(atk.getClass());
                         int hp = jsonObject.getInt("hp");
                         int mp = jsonObject.getInt("mp");
-                        System.out.println("使用第 " + atk + " 招");
+
                         if (sender.equals(activity.userName)) {
                             activity.atkRules.atkJudgmentSelf(atkx, hp, mp);
                         } else {
