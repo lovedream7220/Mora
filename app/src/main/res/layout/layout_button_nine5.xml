@@ -187,6 +187,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#e0000000"
+        android:text="尚未發放"
         android:onClick="atk5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -76,13 +76,32 @@ public class ConnectManager extends AppCompatActivity {
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
-
             runOnUiThread(() -> {
                 try {
                     System.out.println(text);
+                    /**調整位移跟攻擊*/
                     JSONArray jsonArray = new JSONArray("[" + text + "]");
+                    JSONArray jsonArrayOrder = new JSONArray();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        String kind = jsonObject.getString("kind");//kind
+                        if (!kind.equals("atk")) {
+                            jsonArrayOrder.put(jsonObject);
+                        }
+                    }
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        String kind = jsonObject.getString("kind");//kind
+                        if (kind.equals("atk")) {
+                            jsonArrayOrder.put(jsonObject);
+                        }
+                    }
+                    for (int i = 0; i < jsonArrayOrder.length(); i++) {
+                        JSONObject jsonObject = (JSONObject) jsonArrayOrder.get(i);
+                        System.out.println("kind : " + jsonObject.getString("kind"));
+                    }
 
-                    receiveMessage(jsonArray);
+                    receiveMessage(jsonArrayOrder);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -218,15 +237,19 @@ public class ConnectManager extends AppCompatActivity {
                         System.out.println("是不是自己要攻擊 : " + sender.equals(activity.userName));
                         String atk = jsonObject.getString("atk");
                         atk = atk.substring(1, atk.length() - 1);
-                        atk = atk.replace(" " ,"");
+                        atk = atk.replace(" ", "");
                         String c[] = atk.split(",");
-
                         int[] atkx = new int[c.length];
-                        for (int j = 0; j < c.length; j++) {
-                            System.out.print(c[j] + " ");
-                            System.out.println("攻擊位置");
-                            atkx[j] = Integer.parseInt(c[j]);
+                        if (!c[0].equals("ul")) {
+                            for (int j = 0; j < c.length; j++) {
+                                System.out.print(c[j] + " ");
+                                System.out.println("攻擊位置");
+                                atkx[j] = Integer.parseInt(c[j]);
+                            }
+                        } else {
+                            atkx[0] = 0;
                         }
+
                         int hp = jsonObject.getInt("hp");
                         int mp = jsonObject.getInt("mp");
 
@@ -238,8 +261,10 @@ public class ConnectManager extends AppCompatActivity {
                         break;
                 }
             }
-            activity.init();
-
+            activity.includeMoveVisible();
+            if (jsonArray.length() == end) {
+                activity.init();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

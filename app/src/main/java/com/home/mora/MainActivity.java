@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public MoveRules moveRules = new MoveRules(this);
     public AtkRules atkRules = new AtkRules(this);
     public UpRules upRules = new UpRules(this);
-    public AtkDecide atkDecide =new AtkDecide();
+    public AtkDecide atkDecide = new AtkDecide();
 
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAtk3 = findViewById(R.id.buttonAtk3);
         buttonAtk4 = findViewById(R.id.buttonAtk4);
         buttonAtk5 = findViewById(R.id.buttonAtk5);
-//        buttonAtk6 = findViewById(R.id.buttonAtk6);
+        buttonAtk6 = findViewById(R.id.buttonAtk6);
 
         txt_self_name = findViewById(R.id.txt_self_name);
         txt_self_name.setText(userName);
@@ -198,6 +198,16 @@ public class MainActivity extends AppCompatActivity {
         line48 = findViewById(R.id.line48);
         line49 = findViewById(R.id.line49);
 
+        line51 = findViewById(R.id.line51);
+        line52 = findViewById(R.id.line52);
+        line53 = findViewById(R.id.line53);
+        line54 = findViewById(R.id.line54);
+        line55 = findViewById(R.id.line55);
+        line56 = findViewById(R.id.line56);
+        line57 = findViewById(R.id.line57);
+        line58 = findViewById(R.id.line58);
+        line59 = findViewById(R.id.line59);
+
         HP1 = findViewById(R.id.HP1);
         HP2 = findViewById(R.id.HP2);
         HP3 = findViewById(R.id.HP3);
@@ -210,9 +220,6 @@ public class MainActivity extends AppCompatActivity {
         MP4 = findViewById(R.id.MP4);
         MP5 = findViewById(R.id.MP5);
         MP6 = findViewById(R.id.MP6);
-
-
-
 
     }
 
@@ -277,13 +284,13 @@ public class MainActivity extends AppCompatActivity {
         buttonAtk3.setEnabled(false);
         buttonAtk4.setEnabled(false);
         buttonAtk5.setEnabled(false);
-//        buttonAtk6.setEnabled(false);
+        buttonAtk5.setEnabled(false);
         buttonAtk1.setBackgroundColor(Color.parseColor("#e0000000"));
         buttonAtk2.setBackgroundColor(Color.parseColor("#e0000000"));
         buttonAtk3.setBackgroundColor(Color.parseColor("#e0000000"));
         buttonAtk4.setBackgroundColor(Color.parseColor("#e0000000"));
         buttonAtk5.setBackgroundColor(Color.parseColor("#e0000000"));
-//        buttonAtk6.setBackgroundColor(Color.parseColor("#e0000000"));
+        buttonAtk6.setBackgroundColor(Color.parseColor("#e0000000"));
 
     }
 
@@ -293,11 +300,13 @@ public class MainActivity extends AppCompatActivity {
         buttonAtk3.setEnabled(true);
         buttonAtk4.setEnabled(true);
         buttonAtk5.setEnabled(true);
+        buttonAtk6.setEnabled(true);
         buttonAtk1.setBackgroundColor(Color.parseColor("#00000000"));
         buttonAtk2.setBackgroundColor(Color.parseColor("#00000000"));
         buttonAtk3.setBackgroundColor(Color.parseColor("#00000000"));
         buttonAtk4.setBackgroundColor(Color.parseColor("#00000000"));
         buttonAtk5.setBackgroundColor(Color.parseColor("#00000000"));
+        buttonAtk6.setBackgroundColor(Color.parseColor("#00000000"));
     }
 
     public void openBtn() {
@@ -363,14 +372,12 @@ public class MainActivity extends AppCompatActivity {
         moveRules.moveCommon(0, -1, "向下");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void tool1(View view) {
-
-//        sendMessageMoveAtk(1);
+        sendMessageUp("hp", 2);
     }
 
     public void tool2(View view) {
-//        sendMessageMoveAtk(2);
+        sendMessageUp("mp", 4);
     }
 
     public void controlMPHP(TextView PP, int add) {
@@ -409,13 +416,11 @@ public class MainActivity extends AppCompatActivity {
     public void init() {
         openBtn();
         openBtnAtk();
-        includeMoveVisible();
-        controlMPHP(txt_self_hp, 1);
-        controlMPHP(txt_com_hp, 1);
-        controlMPHP(txt_self_mp, 2);
-        controlMPHP(txt_com_mp, 2);
-        atkRules.MPLimit(1, button5);
-        atkRules.MPLimit(2, button6);
+        atkRules.MPLimit(atkDecide.MP[0], buttonAtk1);
+        atkRules.MPLimit(atkDecide.MP[1], buttonAtk2);
+        atkRules.MPLimit(atkDecide.MP[2], buttonAtk3);
+        atkRules.MPLimit(atkDecide.MP[3], buttonAtk4);
+        atkRules.MPLimit(atkDecide.MP[4], buttonAtk5);
         gameEnd();
         atkRules.initAtkRange();
     }
@@ -457,8 +462,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessageUp(String pp, int l) {
 //        lockBtn();
+        includeMoveInvisible();
         Toast.makeText(this, "回復", Toast.LENGTH_SHORT).show();
-        connectManager.sendMessage(l, "hp", "up");
+        connectManager.sendMessage(l, pp, "up");
     }
 
     public void sendMessageMoveAtk(int[] atk, int hp, int mp) {
@@ -470,27 +476,31 @@ public class MainActivity extends AppCompatActivity {
 
     public void atk1(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(atkDecide.atk0[0],atkDecide.HP[0],atkDecide.MP[0]);
+        sendMessageMoveAtk(atkDecide.atk0[0], atkDecide.HP[0], atkDecide.MP[0]);
     }
 
     public void atk2(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(atkDecide.atk0[1],atkDecide.HP[1],atkDecide.MP[1]);
+        sendMessageMoveAtk(atkDecide.atk0[1], atkDecide.HP[1], atkDecide.MP[1]);
     }
 
     public void atk3(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(atkDecide.atk0[2],atkDecide.HP[2],atkDecide.MP[2]);
+        sendMessageMoveAtk(atkDecide.atk0[2], atkDecide.HP[2], atkDecide.MP[2]);
     }
 
     public void atk4(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(atkDecide.atk0[3],atkDecide.HP[3],atkDecide.MP[3]);
+        sendMessageMoveAtk(atkDecide.atk0[3], atkDecide.HP[3], atkDecide.MP[3]);
     }
 
     public void atk5(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(atkDecide.atk0[4],atkDecide.HP[4],atkDecide.MP[4]);
+        sendMessageMoveAtk(atkDecide.atk0[4], atkDecide.HP[4], atkDecide.MP[4]);
     }
 
+    public void atk6(View v) {
+        lockBtnAtk();
+        sendMessageMoveAtk(null, 0, 0);
+    }
 }

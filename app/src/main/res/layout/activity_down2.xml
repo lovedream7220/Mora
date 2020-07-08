@@ -216,7 +216,7 @@
                     android:id="@+id/HP5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="X"
                     android:textSize="15dp" />
 
                 <TextView
@@ -229,7 +229,7 @@
                     android:id="@+id/MP5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="X"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -259,7 +259,7 @@
                     android:id="@+id/HP6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="0"
                     android:textSize="15dp" />
 
                 <TextView
@@ -272,7 +272,7 @@
                     android:id="@+id/MP6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="0"
                     android:textSize="15dp" />
             </LinearLayout>
         </TableRow>
