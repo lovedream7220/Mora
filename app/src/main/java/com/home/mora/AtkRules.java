@@ -29,10 +29,11 @@ public class AtkRules {
      * atkRangeSelf
      * atkRangeCom
      */
-    public int[][] getAtkRange(String who, int atkKindNum) {
+    public int[][] getAtkRange(String who, int[] atkKindNum) {
         /**會記錄玩家攻擊的位置方便後續計算*/
-        atkKindNum = atkKindNum - 1;
-        int[][] atkRangeO = AtkKind.getAtk(atkKindNum); // 初始位置
+//        atkKindNum = atkKindNum - 1;
+//        int[][] atkRangeO = AtkKind.getAtk(atkKindNum); // 初始位置
+        int[][] atkRangeO = pointJB(atkKindNum);
         int[][] atkRangeX = new int[atkRangeO.length][2]; //根據座標重繪的位置
         if (who.equals("自己")) {
             for (int i = 0; i < atkRangeO.length; i++) {
@@ -171,13 +172,13 @@ public class AtkRules {
     /**
      *
      */
-    public void atkJudgmentSelf(int atkKindNum) {
+    public void atkJudgmentSelf(int[] atkKindNum, int hp, int mp) {
         /**
          * 1.扣魔力
          * 2.自己是否攻擊成功
          * 3.
          * */
-        activity.controlMPHP(activity.txt_self_mp, -getAtkMP(atkKindNum));//1.扣自己魔力
+        activity.controlMPHP(activity.txt_self_mp, -mp);//1.扣自己魔力
         int[] XY = {activity.locationXCom, activity.locationYCom};
         boolean success = false;
         for (int[] el : getAtkRange("自己", atkKindNum)) { // 獲取攻擊範圍時順便畫畫
@@ -186,16 +187,16 @@ public class AtkRules {
             }
         }
         if (success) {
-            activity.controlMPHP(activity.txt_com_hp, -getAtkHP(atkKindNum));//1.扣對手血量
-            Toast.makeText(context, "攻擊成功!! 扣對方 " + getAtkHP(atkKindNum) + " HP ", Toast.LENGTH_LONG).show();
+            activity.controlMPHP(activity.txt_com_hp, -hp);//1.扣對手血量
+            Toast.makeText(context, "攻擊成功!! 扣對方 " + hp + " HP ", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context, "攻擊失敗.. 消耗 " + getAtkMP(atkKindNum) + " MP ", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "攻擊失敗.. 消耗 " + mp + " MP ", Toast.LENGTH_LONG).show();
         }
         rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
 
-    public void atkJudgmentCom(int atkKindNum) {
-        activity.controlMPHP(activity.txt_com_mp, -getAtkMP(atkKindNum));//1.扣對手魔力
+    public void atkJudgmentCom(int[] atkKindNum, int hp, int mp) {
+        activity.controlMPHP(activity.txt_com_mp, -mp);//1.扣對手魔力
         int[] XY = {activity.locationXSelf, activity.locationYSelf};
         boolean success = false;
         for (int[] el : getAtkRange("對手", atkKindNum)) {
@@ -204,15 +205,11 @@ public class AtkRules {
             }
         }
         if (success) {
-            activity.controlMPHP(activity.txt_self_hp, -getAtkHP(atkKindNum));//1.扣自己血量
+            activity.controlMPHP(activity.txt_self_hp, -hp);//1.扣自己血量
         }
         rangeSame();//如果攻擊位置重疊 變成其他圖片
     }
 
-    public int getAtkHP(int atkKindNum) {
-        atkKindNum = atkKindNum - 1;
-        return AtkKind.getAtkHP(atkKindNum);
-    }
 
     public int getAtkMP(int atkKindNum) {
         atkKindNum = atkKindNum - 1;
@@ -232,15 +229,15 @@ public class AtkRules {
         atkRangeDD = null;
     }
 
-    public void atkDrawHPMP(){
-        activity.HP1.setText(atkDecide.HP[0]+"");
-        activity.HP2.setText(atkDecide.HP[1]+"");
-        activity.HP3.setText(atkDecide.HP[2]+"");
-        activity.HP4.setText(atkDecide.HP[3]+"");
-        activity.MP1.setText(atkDecide.MP[0]+"");
-        activity.MP2.setText(atkDecide.MP[1]+"");
-        activity.MP3.setText(atkDecide.MP[2]+"");
-        activity.MP3.setText(atkDecide.MP[3]+"");
+    public void atkDrawHPMP() {
+        activity.HP1.setText(atkDecide.HP[0] + "");
+        activity.HP2.setText(atkDecide.HP[1] + "");
+        activity.HP3.setText(atkDecide.HP[2] + "");
+        activity.HP4.setText(atkDecide.HP[3] + "");
+        activity.MP1.setText(atkDecide.MP[0] + "");
+        activity.MP2.setText(atkDecide.MP[1] + "");
+        activity.MP3.setText(atkDecide.MP[2] + "");
+        activity.MP3.setText(atkDecide.MP[3] + "");
 
     }
 
@@ -370,6 +367,52 @@ public class AtkRules {
                     break;
             }
         }
-
     }
+
+    public static int[][] pointJB(int[] atk0) {
+        int[][] pointHere = new int[atk0.length][2];
+        for (int i = 0; i < atk0.length; i++) {
+            int x = i;
+            switch (atk0[i]) {
+                case 1:
+                    pointHere[x][0] = -1;
+                    pointHere[x][1] = 1;
+                    break;
+                case 2:
+                    pointHere[x][0] = 0;
+                    pointHere[x][1] = 1;
+                    break;
+                case 3:
+                    pointHere[x][0] = 1;
+                    pointHere[x][1] = 1;
+                    break;
+                case 4:
+                    pointHere[x][0] = -1;
+                    pointHere[x][1] = 0;
+                    break;
+                case 5:
+                    pointHere[x][0] = 0;
+                    pointHere[x][1] = 0;
+                    break;
+                case 6:
+                    pointHere[x][0] = 1;
+                    pointHere[x][1] = 0;
+                    break;
+                case 7:
+                    pointHere[x][0] = -1;
+                    pointHere[x][1] = -1;
+                    break;
+                case 8:
+                    pointHere[x][0] = 0;
+                    pointHere[x][1] = -1;
+                    break;
+                case 9:
+                    pointHere[x][0] = 1;
+                    pointHere[x][1] = -1;
+                    break;
+            }
+        }
+        return pointHere;
+    }
+
 }

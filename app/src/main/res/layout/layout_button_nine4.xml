@@ -10,110 +10,99 @@
     tools:context=".MainActivity">
 
 
-    <Button
-        android:id="@+id/buttonAtk4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="atk4"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/line44"
-        app:layout_constraintTop_toTopOf="@+id/line42" />
-
     <View
         android:id="@+id/line41"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/line42"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline15"
         app:layout_constraintStart_toEndOf="@+id/line41"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/line43"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/line42"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/line44"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line41"
-        app:layout_constraintVertical_bias="1.0"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/line45"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="@+id/line42"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline14"
         app:layout_constraintTop_toBottomOf="@+id/line42"
-        app:layout_constraintVertical_bias="0.0"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/line46"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/line42"
-        app:layout_constraintTop_toBottomOf="@+id/line43"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/line43" />
 
     <View
         android:id="@+id/line47"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line44"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/line44" />
 
     <View
         android:id="@+id/line48"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/line42"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/line41"
         app:layout_constraintTop_toBottomOf="@+id/line45"
-        app:layout_constraintVertical_bias="1.0"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="1.0" />
 
 
     <View
@@ -121,13 +110,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#FF0000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/line43"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/line42"
         app:layout_constraintTop_toTopOf="@+id/guideline13"
-        app:layout_constraintVertical_bias="1.0"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/lineY1"
@@ -193,4 +182,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.67396593" />
 
+    <Button
+        android:id="@+id/buttonAtk4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e0000000"
+        android:onClick="atk4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/line44"
+        app:layout_constraintTop_toTopOf="@+id/line42" />
 </androidx.constraintlayout.widget.ConstraintLayout>

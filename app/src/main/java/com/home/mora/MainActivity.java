@@ -3,6 +3,7 @@ package com.home.mora;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public MoveRules moveRules = new MoveRules(this);
     public AtkRules atkRules = new AtkRules(this);
     public UpRules upRules = new UpRules(this);
-
+    public AtkDecide atkDecide =new AtkDecide();
 
     /**
      * 命名用途 只有不同名字的人才可以連線成功　TODO
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         step = 0;
         atkRules.atkDraw();
         atkRules.atkDrawHPMP();
+        openBtnAtk();
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
@@ -209,6 +211,9 @@ public class MainActivity extends AppCompatActivity {
         MP5 = findViewById(R.id.MP5);
         MP6 = findViewById(R.id.MP6);
 
+
+
+
     }
 
 
@@ -272,13 +277,27 @@ public class MainActivity extends AppCompatActivity {
         buttonAtk3.setEnabled(false);
         buttonAtk4.setEnabled(false);
         buttonAtk5.setEnabled(false);
-        buttonAtk6.setEnabled(false);
-        buttonAtk1.setAlpha(0.2f);
-        buttonAtk2.setAlpha(0.2f);
-        buttonAtk3.setAlpha(0.2f);
-        buttonAtk4.setAlpha(0.2f);
-        buttonAtk5.setAlpha(0.2f);
-        buttonAtk6.setAlpha(0.2f);
+//        buttonAtk6.setEnabled(false);
+        buttonAtk1.setBackgroundColor(Color.parseColor("#e0000000"));
+        buttonAtk2.setBackgroundColor(Color.parseColor("#e0000000"));
+        buttonAtk3.setBackgroundColor(Color.parseColor("#e0000000"));
+        buttonAtk4.setBackgroundColor(Color.parseColor("#e0000000"));
+        buttonAtk5.setBackgroundColor(Color.parseColor("#e0000000"));
+//        buttonAtk6.setBackgroundColor(Color.parseColor("#e0000000"));
+
+    }
+
+    public void openBtnAtk() {
+        buttonAtk1.setEnabled(true);
+        buttonAtk2.setEnabled(true);
+        buttonAtk3.setEnabled(true);
+        buttonAtk4.setEnabled(true);
+        buttonAtk5.setEnabled(true);
+        buttonAtk1.setBackgroundColor(Color.parseColor("#00000000"));
+        buttonAtk2.setBackgroundColor(Color.parseColor("#00000000"));
+        buttonAtk3.setBackgroundColor(Color.parseColor("#00000000"));
+        buttonAtk4.setBackgroundColor(Color.parseColor("#00000000"));
+        buttonAtk5.setBackgroundColor(Color.parseColor("#00000000"));
     }
 
     public void openBtn() {
@@ -350,11 +369,11 @@ public class MainActivity extends AppCompatActivity {
 //        view.setBackground(getResources().getDrawable(R.drawable.hpup));
 //        System.out.println(view.getBackground());
 //        System.out.println(getResources().getDrawable(R.drawable.hpup));
-        sendMessageMoveAtk(1);
+//        sendMessageMoveAtk(1);
     }
 
     public void tool2(View view) {
-        sendMessageMoveAtk(2);
+//        sendMessageMoveAtk(2);
     }
 
     public void controlMPHP(TextView PP, int add) {
@@ -444,36 +463,36 @@ public class MainActivity extends AppCompatActivity {
         connectManager.sendMessage(l, "hp", "up");
     }
 
-    public void sendMessageMoveAtk(int atk) {
+    public void sendMessageMoveAtk(int[] atk, int hp, int mp) {
 //        lockBtn();
         Toast.makeText(this, "攻擊", Toast.LENGTH_SHORT).show();
-        connectManager.sendMessage(atk, "atk");
+        connectManager.sendMessage(atk, hp, mp, "atk");
     }
 
 
     public void atk1(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(1);
+        sendMessageMoveAtk(atkDecide.atk0[0],atkDecide.HP[0],atkDecide.MP[0]);
     }
 
     public void atk2(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(1);
+        sendMessageMoveAtk(atkDecide.atk0[1],atkDecide.HP[1],atkDecide.MP[1]);
     }
 
     public void atk3(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(1);
+        sendMessageMoveAtk(atkDecide.atk0[2],atkDecide.HP[2],atkDecide.MP[2]);
     }
 
     public void atk4(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(1);
+        sendMessageMoveAtk(atkDecide.atk0[3],atkDecide.HP[3],atkDecide.MP[3]);
     }
 
     public void atk5(View v) {
         lockBtnAtk();
-        sendMessageMoveAtk(1);
+        sendMessageMoveAtk(atkDecide.atk0[4],atkDecide.HP[4],atkDecide.MP[4]);
     }
 
 }

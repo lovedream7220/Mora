@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://37a9bca594f8.ngrok.io";
+    private static final String SERVER_PATH = "http://925836ab87fa.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -145,8 +146,6 @@ public class ConnectManager extends AppCompatActivity {
 //        }.start();
 
 
-
-
         for (int i = 0; i < 4; i++) {
             Message msg = new Message();
             Bundle bundle = new Bundle();
@@ -222,12 +221,24 @@ public class ConnectManager extends AppCompatActivity {
                     case "atk":
                         System.out.println("執行 : " + i);
                         System.out.println("是不是自己要攻擊 : " + sender.equals(activity.userName));
-                        int atk = jsonObject.getInt("atk");
+                        String atk = jsonObject.getString("atk");
+                        atk = atk.substring(1, atk.length() - 1);
+                        atk = atk.replace(" " ,"");
+                        int[] atkx = new int[atk.length()];
+                        String c[] = atk.split(",");
+                        for (int j = 0; j < c.length; j++) {
+                            System.out.println(c[j]);
+                            atkx[j] = Integer.parseInt(c[j]);
+                        }
+                        System.out.println(atk);
+                        System.out.println(atk.getClass());
+                        int hp = jsonObject.getInt("hp");
+                        int mp = jsonObject.getInt("mp");
                         System.out.println("使用第 " + atk + " 招");
                         if (sender.equals(activity.userName)) {
-                            activity.atkRules.atkJudgmentSelf(atk);
+                            activity.atkRules.atkJudgmentSelf(atkx, hp, mp);
                         } else {
-                            activity.atkRules.atkJudgmentCom(atk);
+                            activity.atkRules.atkJudgmentCom(atkx, hp, mp);
                         }
                         break;
                 }
@@ -246,18 +257,16 @@ public class ConnectManager extends AppCompatActivity {
      * @param num
      * @param kind
      */
-    public void sendMessage(int num, String kind) {
+    public void sendMessage(int[] num, int hp, int mp, String kind) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("kind", kind);
             jsonObject.put("USER", activity.userName);
             switch (kind) {
-                case "mora":
-                    jsonObject.put("choose", num);
-                    webSocket.send(jsonObject.toString());
-                    break;
                 case "atk":
-                    jsonObject.put("atk", num);
+                    jsonObject.put("atk", Arrays.toString(num));
+                    jsonObject.put("hp", hp);
+                    jsonObject.put("mp", mp);
                     webSocket.send(jsonObject.toString());
                     break;
             }
