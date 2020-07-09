@@ -3,6 +3,7 @@ package com.home.mora;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public TextView txt_self_hp, txt_self_mp, txt_com_hp, txt_com_mp;
     public View button, button2, button3, button4, button5, button6;
     public View buttonAtk1, buttonAtk2, buttonAtk3, buttonAtk4, buttonAtk5, buttonAtk6;
-
+    public String ip;
 
     public View[] locationX;
     public View[] locationY;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         atkRules.atkDraw();
         atkRules.atkDrawHPMP();
         openBtnAtk();
+        getSharedPreferences();
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
     }
@@ -223,6 +225,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getSharedPreferences() {
+        EditText editText = findViewById(R.id.ip);
+        String userId = getSharedPreferences("ip", MODE_PRIVATE)
+                .getString("ip", "");
+        ip = userId;
+        editText.setText(ip);
+    }
 
     public void includeMoveInvisible() {
         includeMove.setVisibility(View.INVISIBLE);
@@ -324,15 +333,6 @@ public class MainActivity extends AppCompatActivity {
         button6.setAlpha(1.0f);
     }
 
-    public void setBackground() {
-//        button.setBackground(getResources().getDrawable(R.drawable.hpup));
-    }
-
-
-    public int step() {
-        step = step + 1;
-        return step;
-    }
 
     public void edit(View view) {
         /** 使用者名稱 : 有人名稱就記錄下來*/
@@ -355,6 +355,33 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    public void editIP(View view) {
+        /** 使用者名稱 : 有人名稱就記錄下來*/
+        System.out.println("123123123121");
+        EditText editText = findViewById(R.id.ip);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ip = s.toString();
+                /** 將使用者名稱紀錄進手機內存*/
+                SharedPreferences pref = getSharedPreferences("ip", MODE_PRIVATE);
+                pref.edit()
+                        .putString("ip", ip)
+                        .commit();
+                System.out.println(ip);
+            }
+        });
+
+    }
 
     public void moveRight(View view) {
         moveRules.moveCommon(1, 0, "向右");
@@ -390,12 +417,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initConnect(View view) {
+        connectManager.SERVER_PATH = ip;
         connectManager.initiateSocketConnection();
+        initGame1();
         Toast.makeText(this, "重新連線", Toast.LENGTH_SHORT).show();
     }
 
     public void initStart(View view) {
-        Toast.makeText(this, "沒有淦用", Toast.LENGTH_SHORT).show();
+        initGame1();
+        sendMessageRestart();
+        Toast.makeText(this, "重新開始", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -429,15 +460,12 @@ public class MainActivity extends AppCompatActivity {
     public void gameEnd() {
         if (Integer.parseInt(txt_self_hp.getText().toString()) <= 0 || Integer.parseInt(txt_com_hp.getText().toString()) <= 0) {
             initGame.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "遊戲結束", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "遊戲結束", Toast.LENGTH_LONG).show();
             lockBtn();
         }
     }
 
-    /**
-     * 重新開始 初始化遊戲
-     */
-    public void initGame(View v) {
+    public void initGame1() {
         initGame.setVisibility(View.INVISIBLE);
         txt_self_hp.setText("10");
         txt_com_hp.setText("10");
@@ -447,30 +475,43 @@ public class MainActivity extends AppCompatActivity {
         locationYSelf = 1;
         locationXCom = 4;
         locationYCom = 1;
-        visibility();//重開新局
+        includeMoveVisible();
+        visibility();//重開新局 消滅地圖火焰
+
         openBtn();
+        openBtnAtk();
         imagePlayer.layout(locationX[locationXSelf].getLeft() + 30, locationY[locationYSelf].getTop() - 200, locationX[locationXSelf].getLeft() + 100 + 30, locationY[locationYSelf].getBottom());
         imageCom.layout(locationX[locationXCom].getLeft() + 30, locationY[locationYCom].getTop() - 200, locationX[locationXCom].getLeft() + 100 + 30, locationY[locationYCom].getBottom());
+
+    }
+
+    /**
+     * 重新開始 初始化遊戲
+     */
+    public void initGame(View v) {
+        initGame1();
     }
 
 
     public void sendMessageMove() {
-//        lockBtn();
         Toast.makeText(this, "移動", Toast.LENGTH_SHORT).show();
         connectManager.sendMessage(0, locationXSelf, locationYSelf, "move");
     }
 
     public void sendMessageUp(String pp, int l) {
-//        lockBtn();
         includeMoveInvisible();
         Toast.makeText(this, "回復", Toast.LENGTH_SHORT).show();
         connectManager.sendMessage(l, pp, "up");
     }
 
     public void sendMessageMoveAtk(int[] atk, int hp, int mp) {
-//        lockBtn();
         Toast.makeText(this, "攻擊", Toast.LENGTH_SHORT).show();
         connectManager.sendMessage(atk, hp, mp, "atk");
+    }
+
+    public void sendMessageRestart() {
+        Toast.makeText(this, "重新開始", Toast.LENGTH_SHORT).show();
+        connectManager.sendMessage("restart");
     }
 
 

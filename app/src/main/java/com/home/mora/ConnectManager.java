@@ -36,7 +36,7 @@ public class ConnectManager extends AppCompatActivity {
     private MainActivity activity;
     private TextView txtCom;
     private TextView txtWinLose;
-    private static final String SERVER_PATH = "http://925836ab87fa.ngrok.io";
+    public static String SERVER_PATH = "http://925836ab87fa.ngrok.io";
 
     /**
      * 用來避免改變tgBtn狀態時不知道是收到還是發送的狀況
@@ -51,8 +51,6 @@ public class ConnectManager extends AppCompatActivity {
         activity = (MainActivity) context;
     }
 
-    public ConnectManager() {
-    }
 
     public void initiateSocketConnection() {
         OkHttpClient client = new OkHttpClient();
@@ -160,6 +158,15 @@ public class ConnectManager extends AppCompatActivity {
 //            }
 //        }.start();
 
+        try {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            String kind = jsonObject.getString("kind");
+            if (kind == "restart") {
+                activity.initGame1();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < jsonArray.length(); i++) {
             Message msg = new Message();
@@ -332,6 +339,26 @@ public class ConnectManager extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * bind with GameActivity
+     */
+    public void sendMessage(String kind) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("kind", kind);
+            jsonObject.put("USER", activity.userName);
+            switch (kind) {
+                case "restart":
+                    webSocket.send(jsonObject.toString());
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * bind with GameActivity
